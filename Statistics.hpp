@@ -2,14 +2,11 @@
 #define Statistics_HPP
 
 // Custom
-#include "Helpers/Helpers.h"
-#include "Helpers/ITKHelpers.h"
+#include "Helpers.h"
+#include "ITKHelpers.h"
 
 // STL
 #include <iostream>
-
-// ITK
-#include "itkNumericTraits.h"
 
 namespace Statistics
 {

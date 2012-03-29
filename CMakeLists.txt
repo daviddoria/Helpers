@@ -7,5 +7,3 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
 if(BuildTests)
   add_subdirectory(Tests)
 endif(BuildTests)
-
-#add_subdirectory(Demos)

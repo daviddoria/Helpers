@@ -3,10 +3,11 @@
 
 // Custom
 #include "Helpers.h"
-#include "ITKHelpers.h"
 
 // STL
+#include <cassert>
 #include <iostream>
+#include <stdexcept>
 
 namespace Statistics
 {
@@ -24,10 +25,8 @@ typename TypeTraits<TVector>::LargerComponentType RunningAverage(const TVector& 
   //typedef typename TypeTraits<TVector>::ComponentType ItemType;
   //std::cout << "Helpers::RunningAverage" << std::endl;
   AverageType vectorRunningAverage = v[0]; // We do this because if the length is not known until runtime (std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
-  ITKHelpers::SetObjectToZero(vectorRunningAverage);
 
   using Helpers::length;
-  using ITKHelpers::length;
   for(unsigned int i = 0; i < length(v); ++i)
     {
     //ItemType object = v[i];
@@ -51,10 +50,8 @@ typename TypeTraits<TVector>::LargerComponentType Average(const TVector& v)
   //std::cout << "Helpers::Average" << std::endl;
   typedef typename TypeTraits<TVector>::LargerComponentType AverageType;
   AverageType vectorSum = v[0]; // We do this because if the length is not known until runtime (std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
-  ITKHelpers::SetObjectToZero(vectorSum);
 
   using Helpers::length;
-  using ITKHelpers::length;
   for(unsigned int i = 0; i < length(v); ++i)
     {
     // std::cout << "Average: Adding value " << v[i] << std::endl;
@@ -93,15 +90,12 @@ typename TypeTraits<TVector>::LargerComponentType Variance(const TVector& v)
   // std::cout << "Variance: average = " << average << std::endl;
   //VarianceType variance = itk::NumericTraits<VarianceType>::Zero; // I don't understand why this doesn't work
   VarianceType variance = v[0]; // We do this because if the length is not known until runtime (std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
-  ITKHelpers::SetObjectToZero(variance);
   // Variance = 1/NumPixels * sum_i (x_i - u)^2
 
   // std::cout << "Variance: elements have " << itk::NumericTraits<typename TVector::value_type>::GetLength() << " components." << std::endl;
 
   using Helpers::index;
-  using ITKHelpers::index;
   using Helpers::length;
-  using ITKHelpers::length;
   for(unsigned int component = 0; component < length(variance); ++component)
   {
     float channelVarianceSummation = 0.0f;

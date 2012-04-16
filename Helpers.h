@@ -32,6 +32,8 @@ namespace Helpers
 ////////////////// Non-template function declarations (defined in Helpers.cpp) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+float NegativeLog(const float value);
+
 bool IsValidRGB(const int r, const int g, const int b);
 
 std::string ReplaceFileExtension(const std::string& fileName, const std::string& newExtension);
@@ -107,6 +109,9 @@ float VectorSumOfAbsoluteDifferences(const TVector& a, const TVector& b);
 /** Output a node. */
 template<typename TNode>
 void OutputNode(const TNode& a);
+
+template<typename T>
+void WriteVectorToFile(const std::vector<T> &v, const std::string& filename);
 
 }// end namespace
 

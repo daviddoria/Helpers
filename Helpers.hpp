@@ -18,6 +18,7 @@
 
 // STL
 #include <algorithm> // nth_element()
+#include <fstream>
 #include <iostream>
 #include <limits>
 #include <vector>
@@ -146,6 +147,19 @@ template<typename TNode>
 void OutputNode(const TNode& a)
 {
   std::cout << "(" << a[0] << ", " << a[1] << ")" << std::endl;
+}
+
+template<typename T>
+void WriteVectorToFile(const std::vector<T> &v, const std::string& filename)
+{
+  std::ofstream fout(filename.c_str());
+
+  for(unsigned int i = 0; i < v.size(); ++i)
+    {
+    fout << v[i] << std::endl;
+    }
+
+  fout.close();
 }
 
 }// end namespace

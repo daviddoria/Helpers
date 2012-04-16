@@ -25,6 +25,11 @@
 namespace Helpers
 {
 
+float NegativeLog(const float value)
+{
+  return -1. * log(value);
+}
+
 bool IsValidRGB(const int r, const int g, const int b)
 {
   if(r > 255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0)

@@ -59,6 +59,16 @@ bool StringsMatch(const std::string&, const std::string&);
 // (Normally ceil(-.2) = 0
 float RoundAwayFromZero(const float number);
 
+void
+sphericalToCartesian( double & x, double & y, double & z,
+                      double   r, double   theta, double   phi );
+
+void
+cartesianToSpherical( double & r, double & theta, double & phi,
+                      double   x, double   y, double   z );
+
+void PrintSpherical(double   x, double   y, double   z );
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////// Template function declarations (defined in Helpers.hxx) ///////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////

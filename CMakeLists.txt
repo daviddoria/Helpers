@@ -1,3 +1,5 @@
+project(Helpers)
+
 add_library(libHelpers Helpers.cpp)
 
 # This is needed for shared_ptr and the trick using enable_if and if_fundamental to allow scalars

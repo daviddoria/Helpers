@@ -162,4 +162,20 @@ void WriteVectorToFile(const std::vector<T> &v, const std::string& filename)
   fout.close();
 }
 
+template <typename T>
+void OutputFirst(const T& vec)
+{
+  for(unsigned int i = 0; i < vec.size(); ++i)
+  {
+    std::cout << vec[i].first << " ";
+  }
+  std::cout << std::endl;
+}
+
+template <typename TPair>
+bool SortByFirstAccending(TPair object1, TPair object2)
+{
+  return object1.first < object2.first;
+}
+
 }// end namespace

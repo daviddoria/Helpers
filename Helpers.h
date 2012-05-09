@@ -123,6 +123,12 @@ void OutputNode(const TNode& a);
 template<typename T>
 void WriteVectorToFile(const std::vector<T> &v, const std::string& filename);
 
+template <typename T>
+void OutputFirst(const T& vec);
+
+template <typename TPair>
+bool SortByFirstAccending(TPair object1, TPair object2);
+
 }// end namespace
 
 #include "Helpers.hpp"

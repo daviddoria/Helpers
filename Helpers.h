@@ -129,6 +129,12 @@ void OutputFirst(const T& vec);
 template <typename TPair>
 bool SortByFirstAccending(TPair object1, TPair object2);
 
+template <typename T>
+bool Contains(const std::vector<T>& vec, const T& value);
+
+template <typename T>
+void Output(const std::vector<T>& vec);
+
 }// end namespace
 
 #include "Helpers.hpp"

@@ -178,4 +178,27 @@ bool SortByFirstAccending(TPair object1, TPair object2)
   return object1.first < object2.first;
 }
 
+template <typename T>
+bool Contains(const std::vector<T>& vec, const T& value)
+{
+  for(unsigned int i = 0; i < vec.size(); ++i)
+  {
+    if(vec[i] == value)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+template <typename T>
+void Output(const std::vector<T>& vec)
+{
+  for(unsigned int i = 0; i < vec.size(); ++i)
+  {
+    std::cout << vec[i] << " ";
+  }
+  std::cout << std::endl;
+}
+
 }// end namespace

@@ -129,6 +129,12 @@ void OutputFirst(const T& vec);
 template <typename TPair>
 bool SortByFirstAccending(TPair object1, TPair object2);
 
+template <typename TPair>
+bool SortBySecondAccending(TPair object1, TPair object2);
+
+template <typename T1, typename T2>
+std::vector<T1> ExtractFirst(const std::vector<std::pair<T1, T2> >& vec);
+
 template <typename T>
 bool Contains(const std::vector<T>& vec, const T& value);
 

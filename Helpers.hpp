@@ -178,6 +178,12 @@ bool SortByFirstAccending(TPair object1, TPair object2)
   return object1.first < object2.first;
 }
 
+template <typename TPair>
+bool SortBySecondAccending(TPair object1, TPair object2)
+{
+  return object1.second < object2.second;
+}
+
 template <typename T>
 bool Contains(const std::vector<T>& vec, const T& value)
 {
@@ -199,6 +205,17 @@ void Output(const std::vector<T>& vec)
     std::cout << vec[i] << " ";
   }
   std::cout << std::endl;
+}
+
+template <typename T1, typename T2>
+std::vector<T1> ExtractFirst(const std::vector<std::pair<T1, T2> >& vec)
+{
+  std::vector<T1> firsts(vec.size());
+  for(size_t i = 0; i < vec.size(); ++i)
+  {
+    firsts[i] = vec[i].first;
+  }
+  return firsts;
 }
 
 }// end namespace

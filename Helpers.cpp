@@ -179,4 +179,11 @@ void PrintSpherical(double x, double y, double z)
   std::cout << "r: " << r << " theta: " << theta << " phi: " << phi << std::endl;
 }
 
+int RandomInt(const int minValue, const int maxValue)
+{
+  // Produce a number between 0 and (max - min)
+  int temp = rand() % (maxValue - minValue);
+  return temp + minValue;
+}
+
 } // end namespace

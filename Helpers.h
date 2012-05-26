@@ -141,6 +141,8 @@ bool Contains(const std::vector<T>& vec, const T& value);
 template <typename T>
 void Output(const std::vector<T>& vec);
 
+int RandomInt(const int minValue, const int maxValue);
+
 }// end namespace
 
 #include "Helpers.hpp"

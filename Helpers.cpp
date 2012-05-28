@@ -19,6 +19,7 @@
 #include "Helpers.h"
 
 // STL
+#include <cassert>
 #include <iomanip> // setfill and setw
 #include <sstream>
 
@@ -181,6 +182,13 @@ void PrintSpherical(double x, double y, double z)
 
 int RandomInt(const int minValue, const int maxValue)
 {
+  assert(maxValue > minValue);
+
+  if(maxValue == minValue)
+  {
+    return minValue; // could equivalently return maxValue
+  }
+  
   // Produce a number between 0 and (max - min)
   int temp = rand() % (maxValue - minValue);
   return temp + minValue;

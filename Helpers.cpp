@@ -26,6 +26,16 @@
 namespace Helpers
 {
 
+std::string GetFileExtension(const std::string& fileName)
+{
+  return fileName.substr(fileName.find_last_of(".") + 1); // single parameter substr returns from argument to end
+}
+
+std::string GetPath(const std::string& fileName)
+{
+  return fileName.substr( 0, fileName.find_last_of('/') + 1);
+}
+
 float NegativeLog(const float value)
 {
   return -1. * log(value);

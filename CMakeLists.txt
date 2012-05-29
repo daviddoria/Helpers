@@ -9,6 +9,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 # to be treated as the 0th component of a vector.
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
 
-if(BuildTests)
+if(Helpers_BuildTests)
   add_subdirectory(Tests)
-endif(BuildTests)
+endif(Helpers_BuildTests)

@@ -36,6 +36,9 @@ float NegativeLog(const float value);
 
 bool IsValidRGB(const int r, const int g, const int b);
 
+std::string GetFileExtension(const std::string& fileName);
+std::string GetPath(const std::string& fileName);
+
 std::string ReplaceFileExtension(const std::string& fileName, const std::string& newExtension);
 
 // Zero pad the 'iteration' and append it to the filePrefix, and add ".[fileExtension]" to the end.

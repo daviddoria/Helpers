@@ -182,7 +182,7 @@ void PrintSpherical(double x, double y, double z)
 
 int RandomInt(const int minValue, const int maxValue)
 {
-  assert(maxValue > minValue);
+  assert(maxValue >= minValue);
 
   if(maxValue == minValue)
   {

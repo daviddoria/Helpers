@@ -69,6 +69,8 @@ cartesianToSpherical( double & r, double & theta, double & phi,
 
 void PrintSpherical(double   x, double   y, double   z );
 
+int RandomInt(const int minValue, const int maxValue);
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////// Template function declarations (defined in Helpers.hxx) ///////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +143,8 @@ bool Contains(const std::vector<T>& vec, const T& value);
 template <typename T>
 void Output(const std::vector<T>& vec);
 
-int RandomInt(const int minValue, const int maxValue);
+template <typename T>
+unsigned int ClosestIndex(const std::vector<T>& vec, const T& value);
 
 }// end namespace
 

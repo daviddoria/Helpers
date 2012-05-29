@@ -218,4 +218,16 @@ std::vector<T1> ExtractFirst(const std::vector<std::pair<T1, T2> >& vec)
   return firsts;
 }
 
+template <typename T>
+unsigned int ClosestIndex(const std::vector<T>& vec, const T& value)
+{
+  std::vector<float> distances(vec.size());
+  for(size_t i = 0; i < vec.size(); ++i)
+  {
+    distances[i] = fabs(vec[i] - value);
+  }
+
+  return argmin(distances);
+}
+
 }// end namespace

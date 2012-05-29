@@ -49,6 +49,8 @@ std::string GetSequentialFileName(const std::string& filePrefix, const unsigned 
 // Patch sizes are specified by radius so they always have an odd side length. The side length is (2*radius)+1
 unsigned int SideLengthFromRadius(const unsigned int radius);
 
+bool IsOdd(const int value);
+
 // Convert a 'number' into a zero padded string.
 // ZeroPad(5, 4); produces "0005"
 std::string ZeroPad(const unsigned int number, const unsigned int rep);

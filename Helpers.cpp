@@ -204,4 +204,14 @@ int RandomInt(const int minValue, const int maxValue)
   return temp + minValue;
 }
 
+bool IsOdd(const int value)
+{
+  if(value % 2 == 1)
+  {
+    return true;
+  }
+
+  return false;
+}
+
 } // end namespace

@@ -31,22 +31,4 @@ struct TypeTraits<std::vector<T> >
   typedef T ComponentType;
 };
 
-/** For generic itk::VariableLengthVector, use the same type as the LargerType */
-// template <typename T>
-// struct TypeTraits<itk::VariableLengthVector<T> >
-// {
-//   typedef itk::VariableLengthVector<T> LargerType;
-//   typedef typename TypeTraits<T>::LargerType LargerComponentType;
-//   typedef T ComponentType;
-// };
-
-/** For generic itk::VariableLengthVector<unsigned char>, use itk::VariableLengthVector<float> as the LargerType */
-// template <>
-// struct TypeTraits<itk::VariableLengthVector<unsigned char> >
-// {
-//   typedef itk::VariableLengthVector<float> LargerType;
-//   typedef float LargerComponentType;
-//   typedef unsigned char ComponentType;
-// };
-
 #endif

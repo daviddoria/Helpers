@@ -4,10 +4,14 @@ project(Helpers)
 # if_fundamental to allow scalars
 # to be treated as the 0th component of a vector.
 if(UNIX)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+  #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 endif(UNIX)
 
 add_library(Helpers Helpers.cpp)
+if(UNIX)
+  message("Using UNIX")
+  set_target_properties(Helpers PROPERTIES COMPILE_FLAGS "-std=gnu++0x")
+endif(UNIX)
 
 SET(Helpers_BuildTests ON CACHE BOOL "Build Helpers tests?" FORCE)
 if(Helpers_BuildTests)

@@ -9,6 +9,7 @@ if(UNIX)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 endif(UNIX)
 
+SET(Helpers_BuildTests ON CACHE BOOL "Build Helpers tests?" FORCE)
 if(Helpers_BuildTests)
   add_subdirectory(Tests)
 endif(Helpers_BuildTests)

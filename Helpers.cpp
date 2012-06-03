@@ -38,7 +38,7 @@ std::string GetPath(const std::string& fileName)
 
 float NegativeLog(const float value)
 {
-  return -1. * log(value);
+  return -1.0f * log(value);
 }
 
 bool IsValidRGB(const int r, const int g, const int b)

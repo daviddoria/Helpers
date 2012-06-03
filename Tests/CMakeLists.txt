@@ -3,5 +3,5 @@
 # #include "Helpers/Helpers.h" 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-add_executable(Tests Tests.cpp)
-target_link_libraries(Tests Helpers)
+add_executable(TestHelpers TestHelpers.cpp)
+target_link_libraries(TestHelpers Helpers)

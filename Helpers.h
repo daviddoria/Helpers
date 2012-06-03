@@ -22,6 +22,7 @@
 // STL
 #include <string>
 #include <vector>
+#include <type_traits> // for enable_if and is_fundamental (C++0x)
 
 // Custom
 #include "TypeTraits.h"
@@ -44,7 +45,8 @@ std::string ReplaceFileExtension(const std::string& fileName, const std::string&
 // Zero pad the 'iteration' and append it to the filePrefix, and add ".[fileExtension]" to the end.
 // GetSequentialFileName("test", 2, "png");
 // Produces "test_0002.png"
-std::string GetSequentialFileName(const std::string& filePrefix, const unsigned int iteration, const std::string& fileExtension, const unsigned int paddedLength = 4);
+std::string GetSequentialFileName(const std::string& filePrefix, const unsigned int iteration,
+                                  const std::string& fileExtension, const unsigned int paddedLength = 4);
 
 // Patch sizes are specified by radius so they always have an odd side length. The side length is (2*radius)+1
 unsigned int SideLengthFromRadius(const unsigned int radius);

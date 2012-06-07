@@ -8,3 +8,6 @@ target_link_libraries(TestHelpers Helpers)
 
 add_executable(TestContainerInterface TestContainerInterface.cpp)
 target_link_libraries(TestContainerInterface Helpers)
+
+add_executable(TestStatistics TestStatistics.cpp)
+target_link_libraries(TestStatistics Helpers)

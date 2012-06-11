@@ -27,6 +27,25 @@ namespace Helpers
 {
 
 template <class T>
+bool IsNaN(const T a)
+{
+  return a != a;
+}
+
+template <class T>
+bool ContainsNaN(const T a)
+{
+  for(unsigned int i = 0; i < a.size(); ++i)
+  {
+    if(IsNaN(a[i]))
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+template <class T>
 unsigned int argmin(const T& vec)
 {
   typename T::value_type minValue = std::numeric_limits<typename T::value_type>::max();
@@ -95,7 +114,7 @@ template<typename TVector>
 float VectorSumOfAbsoluteDifferences(const TVector& a, const TVector& b)
 {
   assert(a.size() == b.size());
-  
+
   float sum = 0.0f;
   for(unsigned int i = 0; i < a.size(); ++i)
   {

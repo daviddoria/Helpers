@@ -155,6 +155,14 @@ void Output(const std::vector<T>& vec);
 template <typename T>
 unsigned int ClosestIndex(const std::vector<T>& vec, const T& value);
 
+/** Determine if a value is NaN. */
+template <class T>
+bool IsNaN(const T a);
+
+/** Determine if a container contains any NaN values. */
+template <class T>
+bool ContainsNaN(const T a);
+
 }// end namespace
 
 #include "Helpers.hpp"

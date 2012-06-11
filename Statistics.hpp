@@ -56,7 +56,7 @@ typename TypeTraits<TVector>::LargerComponentType Average(const TVector& v)
   // std::cout << "Average: sum " << vectorSum << std::endl;
   //typename T::value_type vectorAverage = vectorSum / static_cast<float>(v.size());
   AverageType vectorAverage = vectorSum / static_cast<float>(Helpers::length(v));
-  
+
   // std::cout << "Average: average " << vectorAverage << std::endl;
 
   return vectorAverage;
@@ -70,13 +70,16 @@ typename TypeTraits<TVector>::LargerComponentType Variance(const TVector& v)
   {
     throw std::runtime_error("Must have more than 0 items to compute a variance!");
   }
-  
+
   typedef typename TypeTraits<TVector>::LargerComponentType VarianceType;
 
   VarianceType average = Average(v);
   // std::cout << "Variance: average = " << average << std::endl;
   //VarianceType variance = itk::NumericTraits<VarianceType>::Zero; // I don't understand why this doesn't work
-  VarianceType variance = v[0]; // We do this because if the length is not known until runtime (std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
+
+  // We do this (assign variance to the 0th component) because if the length is not known until runtime
+  // (e.g. std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
+  VarianceType variance = v[0];
   // Variance = 1/NumPixels * sum_i (x_i - u)^2
 
   for(unsigned int component = 0; component < Helpers::length(variance); ++component)

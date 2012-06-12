@@ -211,4 +211,20 @@ unsigned int ClosestIndex(const std::vector<T>& vec, const T& value)
   return argmin(distances);
 }
 
+template <class T>
+unsigned int min(const T& v)
+{
+  auto minmax = std::minmax_element(v.begin(), v.end());
+
+  return *(minmax.first);
+}
+
+template <class T>
+unsigned int max(const T& v)
+{
+  auto minmax = std::minmax_element(v.begin(), v.end());
+
+  return *(minmax.second);
+}
+
 }// end namespace

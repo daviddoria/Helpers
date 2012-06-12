@@ -95,9 +95,17 @@ int RandomInt(const int minValue, const int maxValue);
 ////////////////// Template function declarations (defined in Helpers.hpp) ///////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-/** Determine the inex at which the container has the smallest element. */
+/** Determine the index at which the container has the smallest element. */
 template <class T>
 unsigned int argmin(const T& vec);
+
+/** Determine the value of the smallest element. */
+template <class T>
+unsigned int min(const T& vec);
+
+/** Determine the value of the largest element. */
+template <class T>
+unsigned int max(const T& vec);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>

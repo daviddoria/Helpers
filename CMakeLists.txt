@@ -9,7 +9,7 @@ endif(UNIX)
 
 add_library(Helpers Helpers.cpp)
 
-SET(Helpers_BuildTests ON CACHE BOOL "Build Helpers tests?" FORCE)
+SET(Helpers_BuildTests OFF CACHE BOOL "Build Helpers tests?")
 if(Helpers_BuildTests)
   add_subdirectory(Tests)
 endif(Helpers_BuildTests)

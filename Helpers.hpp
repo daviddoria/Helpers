@@ -21,7 +21,6 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
-#include <vector>
 
 namespace Helpers
 {
@@ -209,6 +208,38 @@ unsigned int ClosestIndex(const std::vector<T>& vec, const T& value)
   }
 
   return argmin(distances);
+}
+
+template <class T>
+bool DoesQueueContain(std::queue<T> q, const T& value)
+{
+  while(!q.empty())
+  {
+    T element = q.front();
+    if(element == value)
+    {
+      return true;
+    }
+    q.pop();
+  }
+
+  return false;
+}
+
+template <class T>
+bool DoesStackContain(std::stack<T> s, const T& value)
+{
+  while(!s.empty())
+  {
+    T element = s.top();
+    if(element == value)
+    {
+      return true;
+    }
+    s.pop();
+  }
+
+  return false;
 }
 
 }// end namespace

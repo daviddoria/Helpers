@@ -21,8 +21,10 @@
 
 // STL
 #include <string>
-#include <vector>
+#include <queue>
+#include <stack>
 #include <type_traits> // for enable_if and is_fundamental (C++0x)
+#include <vector>
 
 // Custom
 #include "TypeTraits.h"
@@ -170,6 +172,14 @@ bool IsNaN(const T a);
 /** Determine if a container contains any NaN values. */
 template <class T>
 bool ContainsNaN(const T a);
+
+/** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop through it without affecting original data.*/
+template <class T>
+bool DoesQueueContain(std::queue<T> q, const T& value);
+
+/** Check if a 'value' is present in a stack. Pass 's' by value so we can pop through it without affecting original data.*/
+template <class T>
+bool DoesStackContain(std::stack<T> s, const T& value);
 
 }// end namespace
 

@@ -41,15 +41,6 @@ float NegativeLog(const float value)
   return -1.0f * log(value);
 }
 
-bool IsValidRGB(const int r, const int g, const int b)
-{
-  if(r > 255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0)
-  {
-    return false;
-  }
-  return true;
-}
-
 std::string GetSequentialFileName(const std::string& filePrefix, const unsigned int iteration, const std::string& fileExtension, const unsigned int paddedLength)
 {
   std::stringstream padded;
@@ -198,7 +189,7 @@ int RandomInt(const int minValue, const int maxValue)
   {
     return minValue; // could equivalently return maxValue
   }
-  
+
   // Produce a number between 0 and (max - min)
   int temp = rand() % (maxValue - minValue);
   return temp + minValue;

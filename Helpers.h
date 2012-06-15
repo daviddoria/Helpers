@@ -38,9 +38,6 @@ namespace Helpers
 /** Compute -log(value). */
 float NegativeLog(const float value);
 
-/** Determine if 'r', 'g', and 'b' are all in the range [0, 255]. */
-bool IsValidRGB(const int r, const int g, const int b);
-
 /** Get the characters after the last '.' in a string (the file extension). */
 std::string GetFileExtension(const std::string& fileName);
 
@@ -96,6 +93,10 @@ int RandomInt(const int minValue, const int maxValue);
 /////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////// Template function declarations (defined in Helpers.hpp) ///////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+/** Determine if 'r', 'g', and 'b' are all in the range [0, 255]. */
+template <class T>
+bool IsValidRGB(const T r, const T g, const T b);
 
 /** Determine the index at which the container has the smallest element. */
 template <class T>

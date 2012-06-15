@@ -258,4 +258,14 @@ bool DoesStackContain(std::stack<T> s, const T& value)
   return false;
 }
 
+template <class T>
+bool IsValidRGB(const T r, const T g, const T b)
+{
+  if(r > 255.0f || r < 0.0f || g > 255.0f || g < 0.0f || b > 255.0f || b < 0.0f)
+  {
+    return false;
+  }
+  return true;
+}
+
 }// end namespace

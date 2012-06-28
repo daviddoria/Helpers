@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+
 project(Helpers)
 
 # This is needed for shared_ptr and the trick using enable_if and

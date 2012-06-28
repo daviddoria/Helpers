@@ -268,4 +268,21 @@ bool IsValidRGB(const T r, const T g, const T b)
   return true;
 }
 
+template <class T>
+T Force0to255(const T& value)
+{
+  T returnValue = value;
+
+  if(value < 0)
+  {
+    returnValue = 0;
+  }
+  else if(value > 255)
+  {
+    returnValue = 255;
+  }
+
+  return returnValue;
+}
+
 }// end namespace

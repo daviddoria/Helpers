@@ -182,6 +182,10 @@ bool DoesQueueContain(std::queue<T> q, const T& value);
 template <class T>
 bool DoesStackContain(std::stack<T> s, const T& value);
 
+/** Force a value to be in this range.*/
+template <class T>
+T Force0to255(const T& value);
+
 }// end namespace
 
 #include "Helpers.hpp"

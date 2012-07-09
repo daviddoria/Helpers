@@ -112,7 +112,11 @@ unsigned int max(const T& vec);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>
-void NormalizeVector(T& v);
+void NormalizeVectorInPlace(std::vector<T>& v);
+
+/** Divide every element of a vector by the sum of the vector. */
+template<typename T>
+std::vector<T> NormalizeVector(const std::vector<T>& v);
 
 /** Compute the median of the elements in 'v'. */
 template<typename T>

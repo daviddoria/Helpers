@@ -63,7 +63,7 @@ unsigned int argmin(const T& vec)
 
 
 template<typename T>
-void NormalizeVector(std::vector<T>& v)
+void NormalizeVectorInPlace(std::vector<T>& v)
 {
   T total = static_cast<T>(0);
   for(unsigned int i = 0; i < v.size(); ++i)
@@ -77,6 +77,14 @@ void NormalizeVector(std::vector<T>& v)
     }
 }
 
+template<typename T>
+std::vector<T> NormalizeVector(const std::vector<T>& v)
+{
+  std::vector<T> normalizedVector;
+  std::copy(v.begin(), v.end(), normalizedVector.begin());
+  NormalizeVectorInPlace(normalizedVector);
+  return normalizedVector;
+}
 
 template<typename T>
 typename T::value_type VectorMedian(T v)

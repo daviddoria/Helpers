@@ -4,7 +4,8 @@
 // STL
 #include <vector>
 
-/** For generic types (assume they are scalars). */
+/** For generic types (assume they are scalars). Specializations will have to deal
+  * with the cases that are not. */
 template <class T>
 struct TypeTraits
 {
@@ -13,7 +14,8 @@ struct TypeTraits
   typedef T ComponentType;
 };
 
-/** For unsigned char, use float as the LargerType */
+/** For unsigned char, use float as the LargerType. This is an explicit specialization -
+  * that is this is no longer a template. */
 template <>
 struct TypeTraits<unsigned char>
 {
@@ -22,7 +24,8 @@ struct TypeTraits<unsigned char>
   typedef unsigned char ComponentType;
 };
 
-/** For generic std::vector. */
+/** For generic std::vector. This is a partial specialization (TypeTraits is still a template here),
+  * as we allow the vector template parameter to be specified. */
 template <typename T>
 struct TypeTraits<std::vector<T> >
 {
@@ -30,23 +33,5 @@ struct TypeTraits<std::vector<T> >
   typedef typename TypeTraits<T>::LargerType LargerComponentType;
   typedef T ComponentType;
 };
-
-/** For generic itk::VariableLengthVector, use the same type as the LargerType */
-// template <typename T>
-// struct TypeTraits<itk::VariableLengthVector<T> >
-// {
-//   typedef itk::VariableLengthVector<T> LargerType;
-//   typedef typename TypeTraits<T>::LargerType LargerComponentType;
-//   typedef T ComponentType;
-// };
-
-/** For generic itk::VariableLengthVector<unsigned char>, use itk::VariableLengthVector<float> as the LargerType */
-// template <>
-// struct TypeTraits<itk::VariableLengthVector<unsigned char> >
-// {
-//   typedef itk::VariableLengthVector<float> LargerType;
-//   typedef float LargerComponentType;
-//   typedef unsigned char ComponentType;
-// };
 
 #endif

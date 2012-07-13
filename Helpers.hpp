@@ -21,47 +21,27 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
-#include <vector>
 
 namespace Helpers
 {
 
-// Index functions
-template<typename T>
-typename std::enable_if<std::is_fundamental<T>::value, T&>::type index(T& t, size_t)
+template <class T>
+bool IsNaN(const T a)
 {
-  return t;
+  return a != a;
 }
 
-template<typename T>
-typename std::enable_if<std::is_fundamental<T>::value, T>::type index(const T& t, size_t)
+template <class T>
+bool ContainsNaN(const T a)
 {
-  return t;
-}
-
-template<typename T>
-typename std::enable_if<!std::is_fundamental<T>::value, typename T::value_type&>::type index(T& v, size_t i)
-{
-  return v[i];
-}
-
-template<typename T>
-typename std::enable_if<!std::is_fundamental<T>::value, typename T::value_type>::type index(const T& v, size_t i)
-{
-  return v[i];
-}
-
-// Length functions
-template<typename T>
-typename std::enable_if<std::is_fundamental<T>::value, unsigned int>::type length(const T& t)
-{
-  return 1;
-}
-
-template<typename T>
-unsigned int length(const std::vector<T>& v)
-{
-  return v.size();
+  for(unsigned int i = 0; i < a.size(); ++i)
+  {
+    if(IsNaN(a[i]))
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 template <class T>
@@ -83,7 +63,7 @@ unsigned int argmin(const T& vec)
 
 
 template<typename T>
-void NormalizeVector(std::vector<T>& v)
+void NormalizeVectorInPlace(std::vector<T>& v)
 {
   T total = static_cast<T>(0);
   for(unsigned int i = 0; i < v.size(); ++i)
@@ -97,6 +77,14 @@ void NormalizeVector(std::vector<T>& v)
     }
 }
 
+template<typename T>
+std::vector<T> NormalizeVector(const std::vector<T>& v)
+{
+  std::vector<T> normalizedVector;
+  std::copy(v.begin(), v.end(), normalizedVector.begin());
+  NormalizeVectorInPlace(normalizedVector);
+  return normalizedVector;
+}
 
 template<typename T>
 typename T::value_type VectorMedian(T v)
@@ -133,7 +121,7 @@ template<typename TVector>
 float VectorSumOfAbsoluteDifferences(const TVector& a, const TVector& b)
 {
   assert(a.size() == b.size());
-  
+
   float sum = 0.0f;
   for(unsigned int i = 0; i < a.size(); ++i)
   {
@@ -228,6 +216,81 @@ unsigned int ClosestIndex(const std::vector<T>& vec, const T& value)
   }
 
   return argmin(distances);
+}
+
+template <class T>
+unsigned int min(const T& v)
+{
+  auto minmax = std::minmax_element(v.begin(), v.end());
+
+  return *(minmax.first);
+}
+
+template <class T>
+unsigned int max(const T& v)
+{
+  auto minmax = std::minmax_element(v.begin(), v.end());
+
+  return *(minmax.second);
+}
+
+template <class T>
+bool DoesQueueContain(std::queue<T> q, const T& value)
+{
+  while(!q.empty())
+  {
+    T element = q.front();
+    if(element == value)
+    {
+      return true;
+    }
+    q.pop();
+  }
+
+  return false;
+}
+
+template <class T>
+bool DoesStackContain(std::stack<T> s, const T& value)
+{
+  while(!s.empty())
+  {
+    T element = s.top();
+    if(element == value)
+    {
+      return true;
+    }
+    s.pop();
+  }
+
+  return false;
+}
+
+template <class T>
+bool IsValidRGB(const T r, const T g, const T b)
+{
+  if(r > 255.0f || r < 0.0f || g > 255.0f || g < 0.0f || b > 255.0f || b < 0.0f)
+  {
+    return false;
+  }
+  return true;
+}
+
+template <class T>
+T Force0to255(const T& value)
+{
+  T returnValue = value;
+
+  if(value < 0)
+  {
+    returnValue = 0;
+  }
+  else if(value > 255)
+  {
+    returnValue = 255;
+  }
+
+  return returnValue;
 }
 
 }// end namespace

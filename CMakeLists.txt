@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(Helpers)
 
+set(Helpers_includes ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
+
 # This is needed for shared_ptr and the trick using enable_if and
 # if_fundamental to allow scalars
 # to be treated as the 0th component of a vector.

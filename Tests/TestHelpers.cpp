@@ -1,15 +1,22 @@
 #include "Helpers.h"
 
+// STL
+#include <sstream>
+
 static void TestGetFileExtension();
 
 static void TestSortBySecondAccending();
+
+static void TestInlineIgnore();
 
 int main()
 {
   //TestGetFileExtension();
 
   TestSortBySecondAccending();
-  
+
+  TestInlineIgnore();
+
   return 0;
 }
 
@@ -29,4 +36,15 @@ void TestSortBySecondAccending()
   };
 
   std::sort(v.begin(), v.end(), Helpers::SortBySecondAccending<MyType>);
+}
+
+void TestInlineIgnore()
+{
+  std::stringstream ss;
+  ss << "1 : 2";
+  int a,b;
+
+  ss >> a >> Helpers::InlineIgnore >> b;
+
+  std::cout << a << " " << b << std::endl;
 }

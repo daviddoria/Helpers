@@ -35,6 +35,9 @@ namespace Helpers
 ////////////////// Non-template function declarations (defined in Helpers.cpp) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+/** Ignore a piece of a stream. */
+std::istream& InlineIgnore(std::istream& ss);
+
 /** Compute -log(value). */
 float NegativeLog(const float value);
 

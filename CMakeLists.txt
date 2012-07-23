@@ -1,4 +1,10 @@
+cmake_minimum_required(VERSION 2.8)
+
 project(Helpers)
+
+if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+  set(Helpers_includes ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
+endif()
 
 # This is needed for shared_ptr and the trick using enable_if and
 # if_fundamental to allow scalars
@@ -9,7 +15,7 @@ endif(UNIX)
 
 add_library(Helpers Helpers.cpp)
 
-SET(Helpers_BuildTests ON CACHE BOOL "Build Helpers tests?" FORCE)
+SET(Helpers_BuildTests OFF CACHE BOOL "Build Helpers tests?")
 if(Helpers_BuildTests)
   add_subdirectory(Tests)
 endif(Helpers_BuildTests)

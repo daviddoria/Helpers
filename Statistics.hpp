@@ -47,10 +47,16 @@ typename TypeTraits<TVector>::LargerComponentType Average(const TVector& v)
   // (std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
   AverageType vectorSum = v[0];
 
+  // Zero the initial vector
+  for(unsigned int i = 0; i < Helpers::length(vectorSum); ++i)
+    {
+    Helpers::index(vectorSum, i) = 0;
+    }
+
   for(unsigned int i = 0; i < Helpers::length(v); ++i)
     {
     typedef typename TypeTraits<TVector>::ComponentType ObjectType;
-    ObjectType object = v[i];
+    ObjectType object = Helpers::index(v,i);
     vectorSum += object;
     }
   // std::cout << "Average: sum " << vectorSum << std::endl;

@@ -21,8 +21,10 @@
 
 // STL
 #include <string>
-#include <vector>
+#include <queue>
+#include <stack>
 #include <type_traits> // for enable_if and is_fundamental (C++0x)
+#include <vector>
 
 // Custom
 #include "TypeTraits.h"
@@ -33,11 +35,11 @@ namespace Helpers
 ////////////////// Non-template function declarations (defined in Helpers.cpp) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+/** Ignore a piece of a stream. */
+std::istream& InlineIgnore(std::istream& ss);
+
 /** Compute -log(value). */
 float NegativeLog(const float value);
-
-/** Determine if 'r', 'g', and 'b' are all in the range [0, 255]. */
-bool IsValidRGB(const int r, const int g, const int b);
 
 /** Get the characters after the last '.' in a string (the file extension). */
 std::string GetFileExtension(const std::string& fileName);
@@ -95,7 +97,11 @@ int RandomInt(const int minValue, const int maxValue);
 ////////////////// Template function declarations (defined in Helpers.hpp) ///////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-/** Determine the inex at which the container has the smallest element. */
+/** Determine if 'r', 'g', and 'b' are all in the range [0, 255]. */
+template <class T>
+bool IsValidRGB(const T r, const T g, const T b);
+
+/** Determine the index at which the container has the smallest element. */
 template <class T>
 unsigned int argmin(const T& vec);
 
@@ -109,7 +115,11 @@ typename T::value_type max(const T& vec);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>
-void NormalizeVector(T& v);
+void NormalizeVectorInPlace(std::vector<T>& v);
+
+/** Divide every element of a vector by the sum of the vector. */
+template<typename T>
+std::vector<T> NormalizeVector(const std::vector<T>& v);
 
 /** Compute the median of the elements in 'v'. */
 template<typename T>
@@ -162,6 +172,26 @@ void Output(const std::vector<T>& vec);
 /** Compare all of the elements of 'vec' to 'value' and determine which one has the smallest distance. */
 template <typename T>
 unsigned int ClosestIndex(const std::vector<T>& vec, const T& value);
+
+/** Determine if a value is NaN. */
+template <class T>
+bool IsNaN(const T a);
+
+/** Determine if a container contains any NaN values. */
+template <class T>
+bool ContainsNaN(const T a);
+
+/** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop through it without affecting original data.*/
+template <class T>
+bool DoesQueueContain(std::queue<T> q, const T& value);
+
+/** Check if a 'value' is present in a stack. Pass 's' by value so we can pop through it without affecting original data.*/
+template <class T>
+bool DoesStackContain(std::stack<T> s, const T& value);
+
+/** Force a value to be in this range.*/
+template <class T>
+T Force0to255(const T& value);
 
 }// end namespace
 

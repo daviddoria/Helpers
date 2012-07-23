@@ -99,6 +99,14 @@ int RandomInt(const int minValue, const int maxValue);
 template <class T>
 unsigned int argmin(const T& vec);
 
+/** Determine the value of the smallest element. */
+template <class T>
+typename T::value_type min(const T& vec);
+
+/** Determine the value of the largest element. */
+template <class T>
+typename T::value_type max(const T& vec);
+
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>
 void NormalizeVector(T& v);

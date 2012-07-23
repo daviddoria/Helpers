@@ -192,4 +192,79 @@ unsigned int ClosestIndex(const std::vector<T>& vec, const T& value)
   return argmin(distances);
 }
 
+template <class T>
+typename T::value_type min(const T& v)
+{
+  auto minmax = std::minmax_element(v.begin(), v.end());
+
+  return *(minmax.first);
+}
+
+template <class T>
+typename T::value_type max(const T& v)
+{
+  auto minmax = std::minmax_element(v.begin(), v.end());
+
+  return *(minmax.second);
+}
+
+template <class T>
+bool DoesQueueContain(std::queue<T> q, const T& value)
+{
+  while(!q.empty())
+  {
+    T element = q.front();
+    if(element == value)
+    {
+      return true;
+    }
+    q.pop();
+  }
+
+  return false;
+}
+
+template <class T>
+bool DoesStackContain(std::stack<T> s, const T& value)
+{
+  while(!s.empty())
+  {
+    T element = s.top();
+    if(element == value)
+    {
+      return true;
+    }
+    s.pop();
+  }
+
+  return false;
+}
+
+template <class T>
+bool IsValidRGB(const T r, const T g, const T b)
+{
+  if(r > 255.0f || r < 0.0f || g > 255.0f || g < 0.0f || b > 255.0f || b < 0.0f)
+  {
+    return false;
+  }
+  return true;
+}
+
+template <class T>
+T Force0to255(const T& value)
+{
+  T returnValue = value;
+
+  if(value < 0)
+  {
+    returnValue = 0;
+  }
+  else if(value > 255)
+  {
+    returnValue = 255;
+  }
+
+  return returnValue;
+}
+
 }// end namespace

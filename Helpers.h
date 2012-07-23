@@ -105,6 +105,10 @@ bool IsValidRGB(const T r, const T g, const T b);
 template <class T>
 unsigned int argmin(const T& vec);
 
+/** Determine the index at which the container has the largest element. */
+template <class T>
+unsigned int argmax(const T& vec);
+
 /** Determine the value of the smallest element. */
 template <class T>
 typename T::value_type min(const T& vec);

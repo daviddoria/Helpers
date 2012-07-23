@@ -61,6 +61,22 @@ unsigned int argmin(const T& vec)
   return minLocation;
 }
 
+template <class T>
+unsigned int argmax(const T& vec)
+{
+  typename T::value_type maxValue = std::numeric_limits<typename T::value_type>::min();
+  unsigned int maxLocation = 0;
+  for(unsigned int i = 0; i < vec.size(); ++i)
+    {
+    if(vec[i] > maxValue)
+      {
+      maxValue = vec[i];
+      maxLocation = i;
+      }
+    }
+
+  return maxLocation;
+}
 
 template<typename T>
 void NormalizeVectorInPlace(std::vector<T>& v)

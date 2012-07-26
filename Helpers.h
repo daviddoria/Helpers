@@ -190,6 +190,10 @@ bool DoesStackContain(std::stack<T> s, const T& value);
 template <class T>
 T Force0to255(const T& value);
 
+/** Computed a weighted sum of 'values' using the associated 'weights'.*/
+template <class TValue>
+TValue WeightedSum(const std::vector<TValue>& values, const std::vector<float>& weights);
+
 }// end namespace
 
 #include "Helpers.hpp"

@@ -293,4 +293,31 @@ T Force0to255(const T& value)
   return returnValue;
 }
 
+template <class TValue>
+TValue WeightedSum(const std::vector<TValue>& values, const std::vector<float>& weights)
+{
+  assert(values.size() == weights.size());
+
+  //TValue weightedSum = TypeTraits<TValue>::Zero();
+
+  // Get the component type and length correct by first assigning weightedSum to one of the 'values', then zeroing it.
+  TValue weightedSum = values[0];
+  weightedSum = 0;
+
+  //float scoreSum = Helpers::Sum(contributingScores.begin(), contributingScores.end());
+  float maxScore = *(std::min_element(weights.begin(), weights.end()));
+  float weightSum = 0.0f;
+  for(unsigned int i = 0; i < weights.size(); ++i)
+  {
+    //float weight = (scoreSum - contributingScores[i]);
+    float weight = (maxScore - weights[i]);
+    weightSum += weight;
+    weightedSum += weight * values[i];
+  }
+
+  weightedSum /= weightSum;
+
+  return weightedSum;
+}
+
 }// end namespace

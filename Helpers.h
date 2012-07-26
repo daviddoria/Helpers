@@ -35,6 +35,9 @@ namespace Helpers
 ////////////////// Non-template function declarations (defined in Helpers.cpp) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+/** Ignore a piece of a stream. */
+std::istream& InlineIgnore(std::istream& ss);
+
 /** Compute -log(value). */
 float NegativeLog(const float value);
 
@@ -102,13 +105,17 @@ bool IsValidRGB(const T r, const T g, const T b);
 template <class T>
 unsigned int argmin(const T& vec);
 
+/** Determine the index at which the container has the largest element. */
+template <class T>
+unsigned int argmax(const T& vec);
+
 /** Determine the value of the smallest element. */
 template <class T>
-unsigned int min(const T& vec);
+typename T::value_type min(const T& vec);
 
 /** Determine the value of the largest element. */
 template <class T>
-unsigned int max(const T& vec);
+typename T::value_type max(const T& vec);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>

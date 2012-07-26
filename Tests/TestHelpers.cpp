@@ -1,6 +1,13 @@
 #include "Helpers.h"
 
-void TestGetFileExtension();
+// STL
+#include <sstream>
+
+static void TestGetFileExtension();
+
+static void TestSortBySecondAccending();
+
+static void TestInlineIgnore();
 
 static void TestWeightedSum();
 

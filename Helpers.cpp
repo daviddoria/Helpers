@@ -205,4 +205,10 @@ bool IsOdd(const int value)
   return false;
 }
 
+std::istream& InlineIgnore(std::istream& ss)
+{
+  ss.ignore(std::numeric_limits<std::streamsize>::max(),':');
+  return ss;
+}
+
 } // end namespace

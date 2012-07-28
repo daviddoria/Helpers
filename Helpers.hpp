@@ -1,6 +1,6 @@
 /*=========================================================================
  *
- *  Copyright David Doria 2011 daviddoria@gmail.com
+ *  Copyright David Doria 2012 daviddoria@gmail.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -96,7 +96,7 @@ void NormalizeVectorInPlace(std::vector<T>& v)
 template<typename T>
 std::vector<T> NormalizeVector(const std::vector<T>& v)
 {
-  std::vector<T> normalizedVector;
+  std::vector<T> normalizedVector(v.size());
   std::copy(v.begin(), v.end(), normalizedVector.begin());
   NormalizeVectorInPlace(normalizedVector);
   return normalizedVector;
@@ -310,30 +310,28 @@ T Force0to255(const T& value)
 }
 
 template <class TValue>
-TValue WeightedSum(const std::vector<TValue>& values, const std::vector<float>& weights)
+TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights)
 {
   assert(values.size() == weights.size());
 
   //TValue weightedSum = TypeTraits<TValue>::Zero();
 
-  // Get the component type and length correct by first assigning weightedSum to one of the 'values', then zeroing it.
+  // Get the component type and length correct by first assigning weightedSum to one of the 'values',
+  // then zeroing it.
   TValue weightedSum = values[0];
   weightedSum = 0;
 
-  //float scoreSum = Helpers::Sum(contributingScores.begin(), contributingScores.end());
-  float maxScore = *(std::min_element(weights.begin(), weights.end()));
   float weightSum = 0.0f;
   for(unsigned int i = 0; i < weights.size(); ++i)
   {
-    //float weight = (scoreSum - contributingScores[i]);
-    float weight = (maxScore - weights[i]);
-    weightSum += weight;
-    weightedSum += weight * values[i];
+    weightSum += weights[i];
+    //weightedSum += weight * values[i];
+    weightedSum += values[i] * weights[i]; // itk::CovariantVector requires this direction of multiplication
   }
 
-  weightedSum /= weightSum;
+  TValue weightedAverage = weightedSum / weightSum;
 
-  return weightedSum;
+  return weightedAverage;
 }
 
 }// end namespace

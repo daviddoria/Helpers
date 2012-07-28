@@ -1,6 +1,6 @@
 /*=========================================================================
  *
- *  Copyright David Doria 2011 daviddoria@gmail.com
+ *  Copyright David Doria 2012 daviddoria@gmail.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -199,7 +199,7 @@ T Force0to255(const T& value);
 
 /** Computed a weighted sum of 'values' using the associated 'weights'.*/
 template <class TValue>
-TValue WeightedSum(const std::vector<TValue>& values, const std::vector<float>& weights);
+TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights);
 
 }// end namespace
 

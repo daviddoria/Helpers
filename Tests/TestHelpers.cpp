@@ -1,5 +1,8 @@
 #include "Helpers.h"
 
+// STL
+#include <sstream>
+
 static void TestGetFileExtension();
 
 static void TestSortBySecondAccending();
@@ -10,6 +13,7 @@ static void TestWeightedAverage();
 
 int main()
 {
+  TestGetFileExtension();
   //TestGetFileExtension();
 
   TestSortBySecondAccending();

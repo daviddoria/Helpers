@@ -1,6 +1,6 @@
 /*=========================================================================
  *
- *  Copyright David Doria 2011 daviddoria@gmail.com
+ *  Copyright David Doria 2012 daviddoria@gmail.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -62,6 +62,22 @@ unsigned int argmin(const T& vec)
   return minLocation;
 }
 
+template <class T>
+unsigned int argmax(const T& vec)
+{
+  typename T::value_type maxValue = std::numeric_limits<typename T::value_type>::min();
+  unsigned int maxLocation = 0;
+  for(unsigned int i = 0; i < vec.size(); ++i)
+    {
+    if(vec[i] > maxValue)
+      {
+      maxValue = vec[i];
+      maxLocation = i;
+      }
+    }
+
+  return maxLocation;
+}
 
 template<typename T>
 void NormalizeVectorInPlace(std::vector<T>& v)
@@ -81,7 +97,7 @@ void NormalizeVectorInPlace(std::vector<T>& v)
 template<typename T>
 std::vector<T> NormalizeVector(const std::vector<T>& v)
 {
-  std::vector<T> normalizedVector;
+  std::vector<T> normalizedVector(v.size());
   std::copy(v.begin(), v.end(), normalizedVector.begin());
   NormalizeVectorInPlace(normalizedVector);
   return normalizedVector;
@@ -220,7 +236,7 @@ unsigned int ClosestIndex(const std::vector<T>& vec, const T& value)
 }
 
 template <class T>
-unsigned int min(const T& v)
+typename T::value_type min(const T& v)
 {
   auto minmax = std::minmax_element(v.begin(), v.end());
 
@@ -228,7 +244,7 @@ unsigned int min(const T& v)
 }
 
 template <class T>
-unsigned int max(const T& v)
+typename T::value_type max(const T& v)
 {
   auto minmax = std::minmax_element(v.begin(), v.end());
 
@@ -292,6 +308,32 @@ T Force0to255(const T& value)
   }
 
   return returnValue;
+}
+
+template <class TValue>
+TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights)
+{
+  assert(values.size() == weights.size());
+
+  //TValue weightedSum = TypeTraits<TValue>::Zero();
+
+  // Get the component type and length correct by first assigning weightedSum to one of the 'values',
+  // then zeroing it.
+  typename TypeTraits<TValue>::LargerType weightedSum = values[0];
+  weightedSum = 0;
+
+  float weightSum = 0.0f;
+  for(unsigned int i = 0; i < weights.size(); ++i)
+  {
+    weightSum += weights[i];
+    //weightedSum += weight * values[i];
+    // itk::CovariantVector requires this direction of multiplication
+    weightedSum += static_cast<typename TypeTraits<TValue>::LargerType>(values[i]) * weights[i]; 
+  }
+
+  TValue weightedAverage = weightedSum / weightSum;
+
+  return weightedAverage;
 }
 
 }// end namespace

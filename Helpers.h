@@ -185,11 +185,13 @@ bool IsNaN(const T a);
 template <class T>
 bool ContainsNaN(const T a);
 
-/** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop through it without affecting original data.*/
+/** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop
+  * through it without affecting original data.*/
 template <class T>
 bool DoesQueueContain(std::queue<T> q, const T& value);
 
-/** Check if a 'value' is present in a stack. Pass 's' by value so we can pop through it without affecting original data.*/
+/** Check if a 'value' is present in a stack. Pass 's' by value so we can pop
+  * through it without affecting original data.*/
 template <class T>
 bool DoesStackContain(std::stack<T> s, const T& value);
 

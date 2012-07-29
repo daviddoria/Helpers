@@ -318,7 +318,7 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
 
   // Get the component type and length correct by first assigning weightedSum to one of the 'values',
   // then zeroing it.
-  TValue weightedSum = values[0];
+  typename TypeTraits<TValue>::LargerType weightedSum = values[0];
   weightedSum = 0;
 
   float weightSum = 0.0f;
@@ -326,7 +326,8 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
   {
     weightSum += weights[i];
     //weightedSum += weight * values[i];
-    weightedSum += values[i] * weights[i]; // itk::CovariantVector requires this direction of multiplication
+    // itk::CovariantVector requires this direction of multiplication
+    weightedSum += static_cast<typename TypeTraits<TValue>::LargerType>(values[i]) * weights[i]; 
   }
 
   TValue weightedAverage = weightedSum / weightSum;

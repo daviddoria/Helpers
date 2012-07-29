@@ -18,6 +18,7 @@
 
 // STL
 #include <algorithm> // nth_element()
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <limits>

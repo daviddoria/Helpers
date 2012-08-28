@@ -104,6 +104,33 @@ typename TypeTraits<TVector>::LargerComponentType Variance(const TVector& v)
   return variance;
 }
 
+template<typename TVector>
+typename TypeTraits<TVector>::LargerComponentType Correlation(const TVector& v1, const TVector& v2)
+{
+  // http://docs.opencv.org/doc/tutorials/imgproc/histograms/histogram_comparison/histogram_comparison.html
+  // d(H_1, H_2) = \frac{\sum_i(H_1(i) - \bar{H_1})(H_2(i)-\bar{H_2})}{sqrt(var(H_1)var(H_2))}
+
+  assert(Helpers::length(v1) > 0);
+  assert(Helpers::length(v1) == Helpers::length(v2));
+
+  float numerator = 0.0f;
+
+  float meanV1 = Average(v1);
+  float meanV2 = Average(v2);
+
+  float varianceV1 = Variance(v1);
+  float varianceV2 = Variance(v2);
+
+  for(int i = 0; i < Helpers::length(v1); ++i)
+  {
+    numerator += (v1[i] - meanV1)*(v2[i] - meanV2);
+  }
+
+  float correlation = numerator/(sqrt(varianceV1 * varianceV2));
+
+  return correlation;
+}
+
 }
 
 #endif

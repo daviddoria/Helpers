@@ -19,6 +19,10 @@ typename TypeTraits<TVector>::LargerComponentType RunningAverage(const TVector& 
 template<typename TVector>
 typename TypeTraits<TVector>::LargerComponentType Variance(const TVector& v);
 
+/** Compute the correlation of two vector. */
+template<typename TVector>
+typename TypeTraits<TVector>::LargerComponentType Correlation(const TVector& v1, const TVector& v2);
+
 }
 
 #include "Statistics.hpp"

@@ -1,6 +1,6 @@
 /*=========================================================================
  *
- *  Copyright David Doria 2011 daviddoria@gmail.com
+ *  Copyright David Doria 2012 daviddoria@gmail.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -34,6 +34,9 @@ namespace Helpers
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////// Non-template function declarations (defined in Helpers.cpp) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
+
+/** Ignore a piece of a stream. */
+std::istream& InlineIgnore(std::istream& ss);
 
 /** Compute -log(value). */
 float NegativeLog(const float value);
@@ -102,13 +105,17 @@ bool IsValidRGB(const T r, const T g, const T b);
 template <class T>
 unsigned int argmin(const T& vec);
 
+/** Determine the index at which the container has the largest element. */
+template <class T>
+unsigned int argmax(const T& vec);
+
 /** Determine the value of the smallest element. */
 template <class T>
-unsigned int min(const T& vec);
+typename T::value_type min(const T& vec);
 
 /** Determine the value of the largest element. */
 template <class T>
-unsigned int max(const T& vec);
+typename T::value_type max(const T& vec);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>
@@ -178,17 +185,23 @@ bool IsNaN(const T a);
 template <class T>
 bool ContainsNaN(const T a);
 
-/** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop through it without affecting original data.*/
+/** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop
+  * through it without affecting original data.*/
 template <class T>
 bool DoesQueueContain(std::queue<T> q, const T& value);
 
-/** Check if a 'value' is present in a stack. Pass 's' by value so we can pop through it without affecting original data.*/
+/** Check if a 'value' is present in a stack. Pass 's' by value so we can pop
+  * through it without affecting original data.*/
 template <class T>
 bool DoesStackContain(std::stack<T> s, const T& value);
 
 /** Force a value to be in this range.*/
 template <class T>
 T Force0to255(const T& value);
+
+/** Computed a weighted sum of 'values' using the associated 'weights'.*/
+template <class TValue>
+TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights);
 
 }// end namespace
 

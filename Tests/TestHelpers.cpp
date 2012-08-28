@@ -1,15 +1,27 @@
 #include "Helpers.h"
 
+// STL
+#include <sstream>
+
 static void TestGetFileExtension();
 
 static void TestSortBySecondAccending();
 
+static void TestInlineIgnore();
+
+static void TestWeightedAverage();
+
 int main()
 {
+  TestGetFileExtension();
   //TestGetFileExtension();
 
   TestSortBySecondAccending();
-  
+
+  TestInlineIgnore();
+
+  TestWeightedAverage();
+
   return 0;
 }
 
@@ -29,4 +41,32 @@ void TestSortBySecondAccending()
   };
 
   std::sort(v.begin(), v.end(), Helpers::SortBySecondAccending<MyType>);
+}
+
+void TestInlineIgnore()
+{
+  std::stringstream ss;
+  ss << "1 : 2";
+  int a,b;
+
+  ss >> a >> Helpers::InlineIgnore >> b;
+
+  std::cout << a << " " << b << std::endl;
+}
+
+void TestWeightedAverage()
+{
+  std::vector<int> values;
+  values.push_back(1);
+  values.push_back(2);
+  values.push_back(3);
+
+  std::vector<float> weights;
+  weights.push_back(1);
+  weights.push_back(1);
+  weights.push_back(2);
+
+  int weightedAverage = Helpers::WeightedAverage(values, weights);
+
+  std::cout << "WeightedAverage: " << weightedAverage << std::endl;
 }

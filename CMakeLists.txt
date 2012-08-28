@@ -10,6 +10,14 @@ if(UNIX)
 endif(UNIX)
 
 add_library(Helpers Helpers.cpp)
+add_custom_target(HelpersSources SOURCES ContainerInterface.h
+ContainerInterface.hpp
+Helpers.hpp
+ParallelSort.h
+ParallelSort.hpp
+Statistics.h
+Statistics.hpp
+TypeTraits.h)
 
 SET(Helpers_BuildTests OFF CACHE BOOL "Build Helpers tests?")
 if(Helpers_BuildTests)

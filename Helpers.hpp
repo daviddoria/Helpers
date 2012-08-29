@@ -22,6 +22,9 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <stdexcept>
+
+#include "TypeTraits.h"
 
 namespace Helpers
 {
@@ -82,6 +85,11 @@ unsigned int argmax(const T& vec)
 template<typename T>
 void NormalizeVectorInPlace(std::vector<T>& v)
 {
+  if(!std::is_floating_point<T>::value)
+  {
+    throw std::runtime_error("NormalizeVectorInPlace requires floating point components!");
+  }
+
   T total = static_cast<T>(0);
   for(unsigned int i = 0; i < v.size(); ++i)
     {
@@ -95,9 +103,9 @@ void NormalizeVectorInPlace(std::vector<T>& v)
 }
 
 template<typename T>
-std::vector<T> NormalizeVector(const std::vector<T>& v)
+std::vector<typename TypeTraits<T>::LargerType> NormalizeVector(const std::vector<T>& v)
 {
-  std::vector<T> normalizedVector(v.size());
+  std::vector<typename TypeTraits<T>::LargerType> normalizedVector(v.size());
   std::copy(v.begin(), v.end(), normalizedVector.begin());
   NormalizeVectorInPlace(normalizedVector);
   return normalizedVector;

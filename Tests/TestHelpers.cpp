@@ -11,18 +11,59 @@ static void TestInlineIgnore();
 
 static void TestWeightedAverage();
 
+static void TestNormalizeVectorInPlace();
+
+static void TestNormalizeVector();
+
 int main()
 {
-  TestGetFileExtension();
-  //TestGetFileExtension();
+//  TestGetFileExtension();
 
-  TestSortBySecondAccending();
+//  TestSortBySecondAccending();
 
-  TestInlineIgnore();
+//  TestInlineIgnore();
 
-  TestWeightedAverage();
+//  TestWeightedAverage();
+
+  TestNormalizeVectorInPlace();
+
+  TestNormalizeVector();
 
   return 0;
+}
+
+void TestNormalizeVector()
+{
+  {
+  std::vector<float> a;
+  a.push_back(1);
+  a.push_back(2);
+  a.push_back(3);
+
+  std::vector<float> normalized = Helpers::NormalizeVector(a);
+  }
+
+  {
+  std::vector<int> a;
+  a.push_back(1);
+  a.push_back(2);
+  a.push_back(3);
+
+  std::vector<float> normalized = Helpers::NormalizeVector(a);
+  }
+}
+
+void TestNormalizeVectorInPlace()
+{
+  {
+  std::vector<float> a;
+  a.push_back(1);
+  a.push_back(2);
+  a.push_back(3);
+
+  Helpers::NormalizeVectorInPlace(a);
+  }
+
 }
 
 void TestGetFileExtension()

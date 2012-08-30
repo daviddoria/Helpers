@@ -15,6 +15,8 @@ static void TestNormalizeVectorInPlace();
 
 static void TestNormalizeVector();
 
+static void TestMinOfIndex();
+
 int main()
 {
 //  TestGetFileExtension();
@@ -25,9 +27,11 @@ int main()
 
 //  TestWeightedAverage();
 
-  TestNormalizeVectorInPlace();
+//  TestNormalizeVectorInPlace();
 
-  TestNormalizeVector();
+//  TestNormalizeVector();
+
+  TestMinOfIndex();
 
   return 0;
 }
@@ -110,4 +114,21 @@ void TestWeightedAverage()
   int weightedAverage = Helpers::WeightedAverage(values, weights);
 
   std::cout << "WeightedAverage: " << weightedAverage << std::endl;
+}
+
+void TestMinOfIndex()
+{
+  std::vector<std::vector<int> > vectorOfVectors;
+  for(unsigned int i = 4; i < 10; ++i)
+  {
+    std::vector<int> v(3);
+    v[0] = i;
+    v[1] = i;
+    v[2] = i;
+    vectorOfVectors.push_back(v);
+  }
+
+  int minComponent2 = Helpers::MinOfIndex(vectorOfVectors, 2);
+
+  std::cout << "minComponent2: " << minComponent2 << std::endl;
 }

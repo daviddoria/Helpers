@@ -103,19 +103,27 @@ bool IsValidRGB(const T r, const T g, const T b);
 
 /** Determine the index at which the container has the smallest element. */
 template <class T>
-unsigned int argmin(const T& vec);
+unsigned int Argmin(const T& vec);
 
 /** Determine the index at which the container has the largest element. */
 template <class T>
-unsigned int argmax(const T& vec);
+unsigned int Argmax(const T& vec);
+
+/** Determine the value of the smallest element of a specified 'index' of a collection of multicomponent objects. */
+template <class TContainer>
+typename TypeTraits<typename TContainer::value_type>::ComponentType MinOfIndex(const TContainer& container, const unsigned int index);
+
+/** Determine the value of the largest element of a specified 'index' of a collection of multicomponent objects. */
+template <class TContainer>
+typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(const TContainer& container, const unsigned int index);
 
 /** Determine the value of the smallest element. */
 template <class T>
-typename T::value_type min(const T& vec);
+typename T::value_type Min(const T& vec);
 
 /** Determine the value of the largest element. */
 template <class T>
-typename T::value_type max(const T& vec);
+typename T::value_type Max(const T& vec);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>

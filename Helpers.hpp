@@ -49,7 +49,7 @@ bool ContainsNaN(const T a)
 }
 
 template <class T>
-unsigned int argmin(const T& vec)
+unsigned int Argmin(const T& vec)
 {
   typename T::value_type minValue = std::numeric_limits<typename T::value_type>::max();
   unsigned int minLocation = 0;
@@ -66,7 +66,7 @@ unsigned int argmin(const T& vec)
 }
 
 template <class T>
-unsigned int argmax(const T& vec)
+unsigned int Argmax(const T& vec)
 {
   typename T::value_type maxValue = std::numeric_limits<typename T::value_type>::min();
   unsigned int maxLocation = 0;
@@ -240,11 +240,11 @@ unsigned int ClosestIndex(const std::vector<T>& vec, const T& value)
     distances[i] = fabs(vec[i] - value);
   }
 
-  return argmin(distances);
+  return Argmin(distances);
 }
 
 template <class T>
-typename T::value_type min(const T& v)
+typename T::value_type Min(const T& v)
 {
   auto minmax = std::minmax_element(v.begin(), v.end());
 
@@ -252,11 +252,39 @@ typename T::value_type min(const T& v)
 }
 
 template <class T>
-typename T::value_type max(const T& v)
+typename T::value_type Max(const T& v)
 {
   auto minmax = std::minmax_element(v.begin(), v.end());
 
   return *(minmax.second);
+}
+
+template <class TContainer>
+typename TypeTraits<typename TContainer::value_type>::ComponentType MinOfIndex(const TContainer& container, const unsigned int index)
+{
+  // Create a container for the single component
+  std::vector<typename TypeTraits<typename TContainer::value_type>::ComponentType> componentContainer(container.size());
+
+  for(size_t i = 0; i < container.size(); ++i)
+  {
+    componentContainer[i] = container[i][index];
+  }
+
+  return Min(componentContainer);
+}
+
+template <class TContainer>
+typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(const TContainer& container, const unsigned int index)
+{
+  // Create a container for the single component
+  std::vector<typename TypeTraits<typename TContainer::value_type>::ComponentType> componentContainer(container.size());
+
+  for(size_t i = 0; i < container.size(); ++i)
+  {
+    componentContainer[i] = container[i][index];
+  }
+
+  return Max(componentContainer);
 }
 
 template <class T>

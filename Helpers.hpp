@@ -25,6 +25,7 @@
 #include <stdexcept>
 
 #include "TypeTraits.h"
+#include "ContainerInterface.h"
 
 namespace Helpers
 {
@@ -372,4 +373,44 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
   return weightedAverage;
 }
 
-}// end namespace
+template <typename TContainer, typename TOutput>
+void MinOfAllIndices(const TContainer& container, TOutput& output)
+{
+  // We cannot return the 'output' because it must be pre-sized and passed in because the
+  // sizing procedure is very different for different containers (std::vector, itk::CovariantVector, etc)
+
+  // Create a container for a single component
+  for(unsigned int component = 0; component < length(container[0]); ++component)
+  {
+    std::vector<typename TypeTraits<typename TContainer::value_type>::ComponentType> componentContainer(container.size());
+
+    for(size_t i = 0; i < container.size(); ++i)
+    {
+      componentContainer[i] = container[i][component];
+    }
+
+    output[component] = Min(componentContainer);
+  }
+}
+
+template <typename TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output)
+{
+  // We cannot return the 'output' because it must be pre-sized and passed in because the
+  // sizing procedure is very different for different containers (std::vector, itk::CovariantVector, etc)
+
+  // Create a container for a single component
+  for(unsigned int component = 0; component < length(container[0]); ++component)
+  {
+    std::vector<typename TypeTraits<typename TContainer::value_type>::ComponentType> componentContainer(container.size());
+
+    for(size_t i = 0; i < container.size(); ++i)
+    {
+      componentContainer[i] = container[i][component];
+    }
+
+    output[component] = Max(componentContainer);
+  }
+}
+
+}// end Helpers namespace

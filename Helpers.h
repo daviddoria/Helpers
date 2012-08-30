@@ -117,6 +117,14 @@ typename TypeTraits<typename TContainer::value_type>::ComponentType MinOfIndex(c
 template <class TContainer>
 typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(const TContainer& container, const unsigned int index);
 
+/** Determine the value of the smallest element of each index of a collection of multicomponent objects. */
+template <class TContainer, typename TOutput>
+void MinOfAllIndices(const TContainer& container, TOutput& output);
+
+/** Determine the value of the largest element of each index of a collection of multicomponent objects. */
+template <class TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output);
+
 /** Determine the value of the smallest element. */
 template <class T>
 typename T::value_type Min(const T& vec);

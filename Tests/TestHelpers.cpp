@@ -17,6 +17,8 @@ static void TestNormalizeVector();
 
 static void TestMinOfIndex();
 
+static void TestMinOfAllIndices();
+
 int main()
 {
 //  TestGetFileExtension();
@@ -31,7 +33,9 @@ int main()
 
 //  TestNormalizeVector();
 
-  TestMinOfIndex();
+//  TestMinOfIndex();
+
+  TestMinOfAllIndices();
 
   return 0;
 }
@@ -131,4 +135,29 @@ void TestMinOfIndex()
   int minComponent2 = Helpers::MinOfIndex(vectorOfVectors, 2);
 
   std::cout << "minComponent2: " << minComponent2 << std::endl;
+}
+
+void TestMinOfAllIndices()
+{
+  const unsigned int numberOfComponents = 3;
+  typedef std::vector<int> VectorType;
+  std::vector<VectorType> vectorOfVectors;
+  for(unsigned int i = 4; i < 10; ++i)
+  {
+    VectorType v(numberOfComponents);
+    v[0] = i;
+    v[1] = i;
+    v[2] = i;
+    vectorOfVectors.push_back(v);
+  }
+
+  VectorType minComponents(numberOfComponents);
+
+  Helpers::MinOfAllIndices(vectorOfVectors, minComponents);
+
+  std::cout << "minComponents: ";
+  for(size_t i = 0; i < minComponents.size(); ++i)
+  {
+    std::cout << minComponents[i] << std::endl;
+  }
 }

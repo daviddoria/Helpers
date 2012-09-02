@@ -201,6 +201,10 @@ bool IsNaN(const T a);
 template <class T>
 bool ContainsNaN(const T a);
 
+/** Keep the top N elements of a priority queue.*/
+template <class TQueue>
+void KeepTopN(TQueue& q, const unsigned int numberToKeep);
+
 /** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop
   * through it without affecting original data.*/
 template <class T>

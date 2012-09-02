@@ -288,6 +288,20 @@ typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(c
   return Max(componentContainer);
 }
 
+template <class TQueue>
+void KeepTopN(TQueue& q, const unsigned int numberToKeep)
+{
+  TQueue newQueue;
+
+  for(unsigned int i = 0; i < numberToKeep; ++i)
+  {
+    newQueue.push(q.top());
+    q.pop();
+  }
+
+  q = newQueue;
+}
+
 template <class T>
 bool DoesQueueContain(std::queue<T> q, const T& value)
 {

@@ -390,9 +390,6 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
 template <typename TContainer, typename TOutput>
 void MinOfAllIndices(const TContainer& container, TOutput& output)
 {
-  // We cannot return the 'output' because it must be pre-sized and passed in because the
-  // sizing procedure is very different for different containers (std::vector, itk::CovariantVector, etc)
-
   // Create a container for a single component
   for(unsigned int component = 0; component < length(container[0]); ++component)
   {

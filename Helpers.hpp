@@ -83,20 +83,24 @@ unsigned int Argmax(const T& vec)
   return maxLocation;
 }
 
-template<typename T>
-void NormalizeVectorInPlace(std::vector<T>& v)
+template<typename TVector>
+void NormalizeVectorInPlace(TVector& v)
 {
-  if(!std::is_floating_point<T>::value)
+  typedef typename TVector::value_type TComponent;
+
+  if(!std::is_floating_point<TComponent>::value)
   {
     throw std::runtime_error("NormalizeVectorInPlace requires floating point components!");
   }
 
-  T total = static_cast<T>(0);
+  // Compute the sum of the elements
+  TComponent total = static_cast<TComponent>(0);
   for(unsigned int i = 0; i < v.size(); ++i)
     {
     total += v[i];
     }
 
+  // Divide each element by the sum
   for(unsigned int i = 0; i < v.size(); ++i)
     {
     v[i] /= total;

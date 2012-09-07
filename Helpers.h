@@ -147,9 +147,9 @@ typename T::value_type Min(const T& vec);
 template <class T>
 typename T::value_type Max(const T& vec);
 
-/** Divide every element of a vector by the sum of the vector. */
-template<typename T>
-void NormalizeVectorInPlace(std::vector<T>& v);
+/** Divide every element of a vector by the sum of the vector. TVector must model std::vector. */
+template<typename TVector>
+void NormalizeVectorInPlace(TVector& v);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>

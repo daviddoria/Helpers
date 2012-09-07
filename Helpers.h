@@ -119,14 +119,25 @@ typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(c
 
 /** Determine the value of the smallest element of each index of a collection of multicomponent objects.
   * We cannot return the 'output' (so instead, we return it by reference) because it must be pre-sized and passed in because the
-  * sizing procedure is very different for different containers (std::vector, itk::CovariantVector, etc)
+  * sizing procedure is very different for different containers (std::vector, itk::CovariantVector, etc).
+  * This is the generic version (that requires TOutput to have an operator[]() (i.e. it is multi-component).
   */
 template <class TContainer, typename TOutput>
-void MinOfAllIndices(const TContainer& container, TOutput& output);
+void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0);
+
+/**
+* This is the special version for scalar TOutput.
+*/
+template <class TContainer, typename TOutput>
+void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0);
 
 /** Determine the value of the largest element of each index of a collection of multicomponent objects. */
 template <class TContainer, typename TOutput>
-void MaxOfAllIndices(const TContainer& container, TOutput& output);
+void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0);
+
+/** Determine the value of the largest element of each index of a collection of multicomponent objects. This is a special version for scalar TOutput.*/
+template <class TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0);
 
 /** Determine the value of the smallest element. */
 template <class T>

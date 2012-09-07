@@ -388,24 +388,23 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
 }
 
 template <typename TContainer, typename TOutput>
-void MinOfAllIndices(const TContainer& container, TOutput& output)
+void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0)
 {
   // Create a container for a single component
   for(unsigned int component = 0; component < length(container[0]); ++component)
   {
-    std::vector<typename TypeTraits<typename TContainer::value_type>::ComponentType> componentContainer(container.size());
-
-    for(size_t i = 0; i < container.size(); ++i)
-    {
-      componentContainer[i] = container[i][component];
-    }
-
-    output[component] = Min(componentContainer);
+    output[component] = MinOfIndex(container, component);
   }
 }
 
 template <typename TContainer, typename TOutput>
-void MaxOfAllIndices(const TContainer& container, TOutput& output)
+void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0)
+{
+  output = Min(container);
+}
+
+template <typename TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0)
 {
   // We cannot return the 'output' because it must be pre-sized and passed in because the
   // sizing procedure is very different for different containers (std::vector, itk::CovariantVector, etc)
@@ -413,15 +412,14 @@ void MaxOfAllIndices(const TContainer& container, TOutput& output)
   // Create a container for a single component
   for(unsigned int component = 0; component < length(container[0]); ++component)
   {
-    std::vector<typename TypeTraits<typename TContainer::value_type>::ComponentType> componentContainer(container.size());
-
-    for(size_t i = 0; i < container.size(); ++i)
-    {
-      componentContainer[i] = container[i][component];
-    }
-
-    output[component] = Max(componentContainer);
+    output[component] = MaxOfIndex(container, component);
   }
+}
+
+template <typename TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0)
+{
+  output = Max(container);
 }
 
 }// end Helpers namespace

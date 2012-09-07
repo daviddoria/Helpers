@@ -88,10 +88,7 @@ void NormalizeVectorInPlace(TVector& v)
 {
   typedef typename TVector::value_type TComponent;
 
-  if(!std::is_floating_point<TComponent>::value)
-  {
-    throw std::runtime_error("NormalizeVectorInPlace requires floating point components!");
-  }
+  static_assert(std::is_floating_point<TComponent>::value, "In NormalizeVectorInPlace, TComponent must be floating_point!");
 
   // Compute the sum of the elements
   TComponent total = static_cast<TComponent>(0);
@@ -215,8 +212,8 @@ bool Contains(const std::vector<T>& vec, const T& value)
   return false;
 }
 
-template <typename T>
-void Output(const std::vector<T>& vec)
+template <typename TVector>
+void Output(const TVector& vec)
 {
   for(unsigned int i = 0; i < vec.size(); ++i)
   {

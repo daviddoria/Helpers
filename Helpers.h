@@ -200,8 +200,8 @@ template <typename T>
 bool Contains(const std::vector<T>& vec, const T& value);
 
 /** Output all of the elements in the vector. */
-template <typename T>
-void Output(const std::vector<T>& vec);
+template <typename TVector>
+void Output(const TVector& vec);
 
 /** Compare all of the elements of 'vec' to 'value' and determine which one has the smallest distance. */
 template <typename T>

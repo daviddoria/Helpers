@@ -41,7 +41,8 @@ float NegativeLog(const float value)
   return -1.0f * log(value);
 }
 
-std::string GetSequentialFileName(const std::string& filePrefix, const unsigned int iteration, const std::string& fileExtension, const unsigned int paddedLength)
+std::string GetSequentialFileName(const std::string& filePrefix, const unsigned int iteration,
+                                  const std::string& fileExtension, const unsigned int paddedLength)
 {
   std::stringstream padded;
   padded << filePrefix << "_" << ZeroPad(iteration, paddedLength) << "." << fileExtension;

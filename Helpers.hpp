@@ -16,6 +16,9 @@
  *
  *=========================================================================*/
 
+#ifndef HELPERS_HPP
+#define HELPERS_HPP
+
 // STL
 #include <algorithm> // nth_element()
 #include <cassert>
@@ -213,13 +216,23 @@ bool Contains(const std::vector<T>& vec, const T& value)
 }
 
 template <typename TVector>
-void Output(const TVector& vec)
+void Output(const TVector& vec, const std::string& vectorName)
 {
+  std::cout << vectorName << ":" << std::endl;
   for(unsigned int i = 0; i < vec.size(); ++i)
   {
     std::cout << vec[i] << " ";
   }
   std::cout << std::endl;
+}
+
+template <typename TVector>
+void OutputInline(const TVector& vec)
+{
+  for(unsigned int i = 0; i < vec.size(); ++i)
+  {
+    std::cout << vec[i] << " ";
+  }
 }
 
 template <typename T1, typename T2>
@@ -424,3 +437,16 @@ void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std:
 }
 
 }// end Helpers namespace
+
+template <typename TComponent>
+std::ostream& operator<<(std::ostream& output, const std::vector<TComponent>& vec)
+{
+  for(unsigned int i = 0; i < vec.size(); ++i)
+  {
+    output << vec[i] << " ";
+  }
+
+  return output;
+}
+
+#endif

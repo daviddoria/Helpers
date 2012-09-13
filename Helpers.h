@@ -237,6 +237,24 @@ T Force0to255(const T& value);
 template <class TValue>
 TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights);
 
+/** When comparing H values, you cannot simply subtract them, because they wrap. That is, 0.99 is very very close in
+  * hue to 0.01, but their standard difference is very large.*/
+struct HSV_H_Difference
+{
+  template <class TValue>
+  TValue operator()(const TValue& a, const TValue& b)
+  {
+    TValue minValue = std::min(a,b);
+    TValue maxValue = std::max(a,b);
+
+    TValue standardDifference = fabs(a - b);
+
+    TValue wrapDifference = (minValue - 0) + (1 - maxValue);
+
+    return std::min(standardDifference, wrapDifference);
+  }
+};
+
 }// end namespace
 
 #include "Helpers.hpp"

@@ -23,7 +23,7 @@
 #include <string>
 #include <queue>
 #include <stack>
-#include <type_traits> // for enable_if and is_fundamental (C++0x)
+#include <type_traits> // for enable_if, is_fundamental, and decltype (C++11)
 #include <vector>
 
 // Custom
@@ -253,6 +253,23 @@ struct HSV_H_Difference
 
     return std::min(standardDifference, wrapDifference);
   }
+};
+
+template<typename T>
+struct HasBracketOperator
+{
+private:
+  template <typename X>
+  static std::true_type
+  check(X*, decltype(&X::operator[]) * = 0);
+
+  template<typename>
+  static std::false_type check(...);
+
+  typedef decltype(check<T>((T*)(0))) type_;
+
+public:
+  static bool const value = type_::value;
 };
 
 }// end namespace

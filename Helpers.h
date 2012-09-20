@@ -1,6 +1,6 @@
 /*=========================================================================
  *
- *  Copyright David Doria 2011 daviddoria@gmail.com
+ *  Copyright David Doria 2012 daviddoria@gmail.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 #include <string>
 #include <queue>
 #include <stack>
-#include <type_traits> // for enable_if and is_fundamental (C++0x)
+#include <type_traits> // for enable_if, is_fundamental, and decltype (C++11)
 #include <vector>
 
 // Custom
@@ -34,6 +34,9 @@ namespace Helpers
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////// Non-template function declarations (defined in Helpers.cpp) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
+
+/** Ignore a piece of a stream. */
+std::istream& InlineIgnore(std::istream& ss);
 
 /** Compute -log(value). */
 float NegativeLog(const float value);
@@ -100,23 +103,57 @@ bool IsValidRGB(const T r, const T g, const T b);
 
 /** Determine the index at which the container has the smallest element. */
 template <class T>
-unsigned int argmin(const T& vec);
+unsigned int Argmin(const T& vec);
+
+/** Determine the index at which the container has the largest element. */
+template <class T>
+unsigned int Argmax(const T& vec);
+
+/** Determine the value of the smallest element of a specified 'index' of a collection of multicomponent objects. */
+template <class TContainer>
+typename TypeTraits<typename TContainer::value_type>::ComponentType MinOfIndex(const TContainer& container, const unsigned int index);
+
+/** Determine the value of the largest element of a specified 'index' of a collection of multicomponent objects. */
+template <class TContainer>
+typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(const TContainer& container, const unsigned int index);
+
+/** Determine the value of the smallest element of each index of a collection of multicomponent objects.
+  * We cannot return the 'output' (so instead, we return it by reference) because it must be pre-sized and passed in because the
+  * sizing procedure is very different for different containers (std::vector, itk::CovariantVector, etc).
+  * This is the generic version (that requires TOutput to have an operator[]() (i.e. it is multi-component).
+  */
+template <class TContainer, typename TOutput>
+void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0);
+
+/**
+* This is the special version for scalar TOutput.
+*/
+template <class TContainer, typename TOutput>
+void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0);
+
+/** Determine the value of the largest element of each index of a collection of multicomponent objects. */
+template <class TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0);
+
+/** Determine the value of the largest element of each index of a collection of multicomponent objects. This is a special version for scalar TOutput.*/
+template <class TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0);
 
 /** Determine the value of the smallest element. */
 template <class T>
-unsigned int min(const T& vec);
+typename T::value_type Min(const T& vec);
 
 /** Determine the value of the largest element. */
 template <class T>
-unsigned int max(const T& vec);
+typename T::value_type Max(const T& vec);
+
+/** Divide every element of a vector by the sum of the vector. TVector must model std::vector. */
+template<typename TVector>
+void NormalizeVectorInPlace(TVector& v);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>
-void NormalizeVectorInPlace(std::vector<T>& v);
-
-/** Divide every element of a vector by the sum of the vector. */
-template<typename T>
-std::vector<T> NormalizeVector(const std::vector<T>& v);
+std::vector<typename TypeTraits<T>::LargerType> NormalizeVector(const std::vector<T>& v);
 
 /** Compute the median of the elements in 'v'. */
 template<typename T>
@@ -163,8 +200,8 @@ template <typename T>
 bool Contains(const std::vector<T>& vec, const T& value);
 
 /** Output all of the elements in the vector. */
-template <typename T>
-void Output(const std::vector<T>& vec);
+template <typename TVector>
+void Output(const TVector& vec);
 
 /** Compare all of the elements of 'vec' to 'value' and determine which one has the smallest distance. */
 template <typename T>
@@ -178,17 +215,66 @@ bool IsNaN(const T a);
 template <class T>
 bool ContainsNaN(const T a);
 
-/** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop through it without affecting original data.*/
+/** Keep the top N elements of a priority queue.*/
+template <class TQueue>
+void KeepTopN(TQueue& q, const unsigned int numberToKeep);
+
+/** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop
+  * through it without affecting original data.*/
 template <class T>
 bool DoesQueueContain(std::queue<T> q, const T& value);
 
-/** Check if a 'value' is present in a stack. Pass 's' by value so we can pop through it without affecting original data.*/
+/** Check if a 'value' is present in a stack. Pass 's' by value so we can pop
+  * through it without affecting original data.*/
 template <class T>
 bool DoesStackContain(std::stack<T> s, const T& value);
 
 /** Force a value to be in this range.*/
 template <class T>
 T Force0to255(const T& value);
+
+/** Computed a weighted sum of 'values' using the associated 'weights'.*/
+template <class TValue>
+TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights);
+
+/** When comparing H values, you cannot simply subtract them, because they wrap. That is, 0.99 is very very close in
+  * hue to 0.01, but their standard difference is very large.*/
+struct HSV_H_Difference
+{
+  template <class TValue>
+  TValue operator()(const TValue& a, const TValue& b)
+  {
+    TValue minValue = std::min(a,b);
+    TValue maxValue = std::max(a,b);
+
+    TValue standardDifference = fabs(a - b);
+
+    TValue wrapDifference = (minValue - 0) + (1 - maxValue);
+
+    return std::min(standardDifference, wrapDifference);
+  }
+};
+
+template<typename T>
+struct HasBracketOperator
+{
+private:
+
+  // Check for a specific const version of the operator[const int] overload
+  template <typename X>
+  static std::true_type
+  check(X*, typename std::enable_if<
+        std::is_same<decltype(std::declval<X const>().operator[](std::declval<int const &>())), typename X::ValueType const&>
+        ::value, void>::type * = 0);
+
+  template<typename>
+  static std::false_type check(...);
+
+  typedef decltype(check<T>((T*)(0))) type_;
+
+public:
+  static bool const value = type_::value;
+};
 
 }// end namespace
 

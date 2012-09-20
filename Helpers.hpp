@@ -1,6 +1,6 @@
 /*=========================================================================
  *
- *  Copyright David Doria 2011 daviddoria@gmail.com
+ *  Copyright David Doria 2012 daviddoria@gmail.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,11 +16,19 @@
  *
  *=========================================================================*/
 
+#ifndef HELPERS_HPP
+#define HELPERS_HPP
+
 // STL
 #include <algorithm> // nth_element()
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <stdexcept>
+
+#include "TypeTraits.h"
+#include "ContainerInterface.h"
 
 namespace Helpers
 {
@@ -45,7 +53,7 @@ bool ContainsNaN(const T a)
 }
 
 template <class T>
-unsigned int argmin(const T& vec)
+unsigned int Argmin(const T& vec)
 {
   typename T::value_type minValue = std::numeric_limits<typename T::value_type>::max();
   unsigned int minLocation = 0;
@@ -61,16 +69,38 @@ unsigned int argmin(const T& vec)
   return minLocation;
 }
 
-
-template<typename T>
-void NormalizeVectorInPlace(std::vector<T>& v)
+template <class T>
+unsigned int Argmax(const T& vec)
 {
-  T total = static_cast<T>(0);
+  typename T::value_type maxValue = std::numeric_limits<typename T::value_type>::min();
+  unsigned int maxLocation = 0;
+  for(unsigned int i = 0; i < vec.size(); ++i)
+    {
+    if(vec[i] > maxValue)
+      {
+      maxValue = vec[i];
+      maxLocation = i;
+      }
+    }
+
+  return maxLocation;
+}
+
+template<typename TVector>
+void NormalizeVectorInPlace(TVector& v)
+{
+  typedef typename TVector::value_type TComponent;
+
+  static_assert(std::is_floating_point<TComponent>::value, "In NormalizeVectorInPlace, TComponent must be floating_point!");
+
+  // Compute the sum of the elements
+  TComponent total = static_cast<TComponent>(0);
   for(unsigned int i = 0; i < v.size(); ++i)
     {
     total += v[i];
     }
 
+  // Divide each element by the sum
   for(unsigned int i = 0; i < v.size(); ++i)
     {
     v[i] /= total;
@@ -78,9 +108,9 @@ void NormalizeVectorInPlace(std::vector<T>& v)
 }
 
 template<typename T>
-std::vector<T> NormalizeVector(const std::vector<T>& v)
+std::vector<typename TypeTraits<T>::LargerType> NormalizeVector(const std::vector<T>& v)
 {
-  std::vector<T> normalizedVector;
+  std::vector<typename TypeTraits<T>::LargerType> normalizedVector(v.size());
   std::copy(v.begin(), v.end(), normalizedVector.begin());
   NormalizeVectorInPlace(normalizedVector);
   return normalizedVector;
@@ -185,14 +215,24 @@ bool Contains(const std::vector<T>& vec, const T& value)
   return false;
 }
 
-template <typename T>
-void Output(const std::vector<T>& vec)
+template <typename TVector>
+void Output(const TVector& vec, const std::string& vectorName)
 {
+  std::cout << vectorName << ":" << std::endl;
   for(unsigned int i = 0; i < vec.size(); ++i)
   {
     std::cout << vec[i] << " ";
   }
   std::cout << std::endl;
+}
+
+template <typename TVector>
+void OutputInline(const TVector& vec)
+{
+  for(unsigned int i = 0; i < vec.size(); ++i)
+  {
+    std::cout << vec[i] << " ";
+  }
 }
 
 template <typename T1, typename T2>
@@ -215,11 +255,11 @@ unsigned int ClosestIndex(const std::vector<T>& vec, const T& value)
     distances[i] = fabs(vec[i] - value);
   }
 
-  return argmin(distances);
+  return Argmin(distances);
 }
 
 template <class T>
-unsigned int min(const T& v)
+typename T::value_type Min(const T& v)
 {
   auto minmax = std::minmax_element(v.begin(), v.end());
 
@@ -227,11 +267,53 @@ unsigned int min(const T& v)
 }
 
 template <class T>
-unsigned int max(const T& v)
+typename T::value_type Max(const T& v)
 {
   auto minmax = std::minmax_element(v.begin(), v.end());
 
   return *(minmax.second);
+}
+
+template <class TContainer>
+typename TypeTraits<typename TContainer::value_type>::ComponentType MinOfIndex(const TContainer& container, const unsigned int index)
+{
+  // Create a container for the single component
+  std::vector<typename TypeTraits<typename TContainer::value_type>::ComponentType> componentContainer(container.size());
+
+  for(size_t i = 0; i < container.size(); ++i)
+  {
+    componentContainer[i] = container[i][index];
+  }
+
+  return Min(componentContainer);
+}
+
+template <class TContainer>
+typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(const TContainer& container, const unsigned int index)
+{
+  // Create a container for the single component
+  std::vector<typename TypeTraits<typename TContainer::value_type>::ComponentType> componentContainer(container.size());
+
+  for(size_t i = 0; i < container.size(); ++i)
+  {
+    componentContainer[i] = container[i][index];
+  }
+
+  return Max(componentContainer);
+}
+
+template <class TQueue>
+void KeepTopN(TQueue& q, const unsigned int numberToKeep)
+{
+  TQueue newQueue;
+
+  for(unsigned int i = 0; i < numberToKeep; ++i)
+  {
+    newQueue.push(q.top());
+    q.pop();
+  }
+
+  q = newQueue;
 }
 
 template <class T>
@@ -293,4 +375,78 @@ T Force0to255(const T& value)
   return returnValue;
 }
 
-}// end namespace
+template <class TValue>
+TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights)
+{
+  assert(values.size() == weights.size());
+
+  //TValue weightedSum = TypeTraits<TValue>::Zero();
+
+  // Get the component type and length correct by first assigning weightedSum to one of the 'values',
+  // then zeroing it.
+  typename TypeTraits<TValue>::LargerType weightedSum = values[0];
+  weightedSum = 0;
+
+  float weightSum = 0.0f;
+  for(unsigned int i = 0; i < weights.size(); ++i)
+  {
+    weightSum += weights[i];
+    //weightedSum += weight * values[i];
+    // itk::CovariantVector requires this direction of multiplication
+    weightedSum += static_cast<typename TypeTraits<TValue>::LargerType>(values[i]) * weights[i]; 
+  }
+
+  TValue weightedAverage = weightedSum / weightSum;
+
+  return weightedAverage;
+}
+
+template <typename TContainer, typename TOutput>
+void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0)
+{
+  // Create a container for a single component
+  for(unsigned int component = 0; component < length(container[0]); ++component)
+  {
+    output[component] = MinOfIndex(container, component);
+  }
+}
+
+template <typename TContainer, typename TOutput>
+void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0)
+{
+  output = Min(container);
+}
+
+template <typename TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0)
+{
+  // We cannot return the 'output' because it must be pre-sized and passed in because the
+  // sizing procedure is very different for different containers (std::vector, itk::CovariantVector, etc)
+
+  // Create a container for a single component
+  for(unsigned int component = 0; component < length(container[0]); ++component)
+  {
+    output[component] = MaxOfIndex(container, component);
+  }
+}
+
+template <typename TContainer, typename TOutput>
+void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0)
+{
+  output = Max(container);
+}
+
+}// end Helpers namespace
+
+template <typename TComponent>
+std::ostream& operator<<(std::ostream& output, const std::vector<TComponent>& vec)
+{
+  for(unsigned int i = 0; i < vec.size(); ++i)
+  {
+    output << vec[i] << " ";
+  }
+
+  return output;
+}
+
+#endif

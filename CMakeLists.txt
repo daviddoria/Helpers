@@ -7,7 +7,7 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 # if_fundamental to allow scalars
 # to be treated as the 0th component of a vector.
 if(UNIX)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 endif(UNIX)
 
 # Give the compiler all of the required include directories
@@ -33,7 +33,7 @@ set_property(GLOBAL PROPERTY HelpersIncludeDirs ${Helpers_include_dirs})
 set_property(GLOBAL PROPERTY HelpersLibs ${Helpers_libraries})
 
 # Build the tests if requested
-SET(Helpers_BuildTests OFF CACHE BOOL "Build Helpers tests?")
+option(Helpers_BuildTests "Build Helpers tests?" OFF)
 if(Helpers_BuildTests)
   add_subdirectory(Tests)
 endif(Helpers_BuildTests)

@@ -21,19 +21,19 @@ static void TestMinOfAllIndices();
 
 int main()
 {
-//  TestGetFileExtension();
+  TestGetFileExtension();
 
-//  TestSortBySecondAccending();
+  TestSortBySecondAccending();
 
-//  TestInlineIgnore();
+  TestInlineIgnore();
 
-//  TestWeightedAverage();
+  TestWeightedAverage();
 
-//  TestNormalizeVectorInPlace();
+  TestNormalizeVectorInPlace();
 
-//  TestNormalizeVector();
+  TestNormalizeVector();
 
-//  TestMinOfIndex();
+  TestMinOfIndex();
 
   TestMinOfAllIndices();
 

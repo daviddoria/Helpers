@@ -19,6 +19,9 @@ static void TestMinOfIndex();
 
 static void TestMinOfAllIndices();
 
+static void TestSphericalToCartesian();
+static void TestCartesianToSpherical();
+
 int main()
 {
   TestGetFileExtension();
@@ -37,11 +40,15 @@ int main()
 
   TestMinOfAllIndices();
 
+  TestSphericalToCartesian();
+  TestCartesianToSpherical();
+
   return 0;
 }
 
 void TestNormalizeVector()
 {
+  std::cout << "TestNormalizeVector()" << std::endl;
   {
   std::vector<float> a;
   a.push_back(1);
@@ -63,6 +70,7 @@ void TestNormalizeVector()
 
 void TestNormalizeVectorInPlace()
 {
+  std::cout << "TestNormalizeVectorInPlace()" << std::endl;
   {
   std::vector<float> a;
   a.push_back(1);
@@ -76,6 +84,7 @@ void TestNormalizeVectorInPlace()
 
 void TestGetFileExtension()
 {
+  std::cout << "TestGetFileExtension()" << std::endl;
   std::string filename = "test.txt";
   std::string extension = Helpers::GetFileExtension(filename);
 
@@ -84,6 +93,7 @@ void TestGetFileExtension()
 
 void TestSortBySecondAccending()
 {
+  std::cout << "TestSortBySecondAccending()" << std::endl;
   typedef std::pair<int, float> MyType;
   std::vector<MyType> v{
         {1, 4.5}, {3, 6.7}, {9, 7.8}
@@ -94,6 +104,7 @@ void TestSortBySecondAccending()
 
 void TestInlineIgnore()
 {
+  std::cout << "TestInlineIgnore()" << std::endl;
   std::stringstream ss;
   ss << "1 : 2";
   int a,b;
@@ -105,6 +116,7 @@ void TestInlineIgnore()
 
 void TestWeightedAverage()
 {
+  std::cout << "TestWeightedAverage()" << std::endl;
   std::vector<int> values;
   values.push_back(1);
   values.push_back(2);
@@ -122,6 +134,7 @@ void TestWeightedAverage()
 
 void TestMinOfIndex()
 {
+  std::cout << "TestMinOfIndex()" << std::endl;
   std::vector<std::vector<int> > vectorOfVectors;
   for(unsigned int i = 4; i < 10; ++i)
   {
@@ -139,6 +152,7 @@ void TestMinOfIndex()
 
 void TestMinOfAllIndices()
 {
+  std::cout << "TestMinOfAllIndices()" << std::endl;
   const unsigned int numberOfComponents = 3;
   typedef std::vector<int> VectorType;
   std::vector<VectorType> vectorOfVectors;
@@ -160,4 +174,35 @@ void TestMinOfAllIndices()
   {
     std::cout << minComponents[i] << std::endl;
   }
+}
+
+void TestSphericalToCartesian()
+{
+  std::cout << "TestSphericalToCartesian()" << std::endl;
+  double r = 1.0;
+  double theta = 0.0;
+  double phi = 0.0;
+
+  double x, y, z;
+
+  Helpers::SphericalToCartesian(x, y, z, r, theta, phi);
+
+  std::cout << "Spherical: r=" << r << " theta=" << theta << " phi=" << phi
+            << " to Cartesian: x=" << x << " y=" << y << " z=" << z << std::endl;
+}
+
+void TestCartesianToSpherical()
+{
+  std::cout << "TestCartesianToSpherical()" << std::endl;
+  double r, theta, phi;
+
+  double x = 0.0;
+  double y = 0.0;
+  double z = 1.0;
+
+  Helpers::CartesianToSpherical(r, theta, phi, x, y, z);
+
+  std::cout << "Cartesian: x=" << x << " y=" << y << " z=" << z
+            << " to Spherical: r=" << r << " theta=" << theta << " phi=" << phi  << std::endl;
+
 }

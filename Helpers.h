@@ -78,16 +78,14 @@ bool StringsMatch(const std::string&, const std::string&);
 float RoundAwayFromZero(const float number);
 
 /** Convert spherical coordinates to cartesian coordinates. */
-void
-sphericalToCartesian( double & x, double & y, double & z,
-                      double   r, double   theta, double   phi );
+void SphericalToCartesian(double & x, double & y, double & z,
+                          double   r, double   theta, double   phi );
 
 /** Convert cartesian coordinates to spherical coordinates. */
-void
-cartesianToSpherical( double & r, double & theta, double & phi,
-                      double   x, double   y, double   z );
+void CartesianToSpherical(double & r, double & theta, double & phi,
+                          double   x, double   y, double   z );
 
-/** Print (to the screen) the sphereical coordinates corresponding to a cartesian point. */
+/** Print (to the screen) the spherical coordinates corresponding to a cartesian point. */
 void PrintSpherical(double   x, double   y, double   z );
 
 /** Generate a random integer between 'minValue' and 'maxValue' */

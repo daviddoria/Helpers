@@ -1,3 +1,4 @@
 *.kate-swp
 .fuse_hidden*
 *.orig
+*.user

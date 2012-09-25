@@ -120,7 +120,7 @@ bool StringsMatch(const std::string& a, const std::string& b)
  * @param z      z coordinate
  ******************************/
 void
-cartesianToSpherical( double & r,
+CartesianToSpherical( double & r,
                       double & theta,
                       double & phi,
                       double   x,
@@ -155,7 +155,7 @@ cartesianToSpherical( double & r,
  * @param phi    Azimutal angle (in radian)
  ******************************/
 void
-sphericalToCartesian( double & x,
+SphericalToCartesian( double & x,
                       double & y,
                       double & z,
                       double   r,
@@ -178,7 +178,7 @@ sphericalToCartesian( double & x,
 void PrintSpherical(double x, double y, double z)
 {
   double r, theta, phi;
-  cartesianToSpherical(r, theta, phi, x, y, z );
+  CartesianToSpherical(r, theta, phi, x, y, z );
   std::cout << "r: " << r << " theta: " << theta << " phi: " << phi << std::endl;
 }
 

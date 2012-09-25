@@ -113,8 +113,8 @@ bool StringsMatch(const std::string& a, const std::string& b)
  *        angles get set to 0).
  *
  * @param r      Reference to return the radius
- * @param theta  Reference to return the inclination angle (in radian)
- * @param phi    Reference to return the azimutal angle (in radian)
+ * @param theta  Reference to return the inclination angle (in radians)
+ * @param phi    Reference to return the azimutal angle (in radians)
  * @param x      x coordinate
  * @param y      y coordinate
  * @param z      z coordinate
@@ -151,8 +151,8 @@ CartesianToSpherical( double & r,
  * @param y      Reference to return the y coordinate
  * @param z      Reference to return the z coordinate
  * @param r      Radius (must be non-negative)
- * @param theta  Inclination angle (in radian)
- * @param phi    Azimutal angle (in radian)
+ * @param theta  Inclination angle (in radians)
+ * @param phi    Azimutal angle (in radians)
  ******************************/
 void
 SphericalToCartesian( double & x,

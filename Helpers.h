@@ -77,11 +77,11 @@ bool StringsMatch(const std::string&, const std::string&);
   * (Normally ceil(-.2) = 0 */
 float RoundAwayFromZero(const float number);
 
-/** Convert spherical coordinates to cartesian coordinates. */
+/** Convert spherical coordinates (in radians) to cartesian coordinates. */
 void SphericalToCartesian(double & x, double & y, double & z,
                           double   r, double   theta, double   phi );
 
-/** Convert cartesian coordinates to spherical coordinates. */
+/** Convert cartesian coordinates to spherical coordinates (in radians). */
 void CartesianToSpherical(double & r, double & theta, double & phi,
                           double   x, double   y, double   z );
 

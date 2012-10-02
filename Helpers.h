@@ -166,6 +166,10 @@ void OutputNode(const TNode& a);
 template<typename T>
 void WriteVectorToFile(const std::vector<T> &v, const std::string& filename);
 
+/** Write the elements of 'v' to separate lines of a text file called 'filename'. */
+template<typename T>
+void WriteVectorToFileLines(const std::vector<T> &v, const std::string& filename);
+
 /** Output all of the .first values. */
 template <typename T>
 void OutputFirst(const T& vec);

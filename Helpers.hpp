@@ -173,9 +173,22 @@ void WriteVectorToFile(const std::vector<T> &v, const std::string& filename)
   std::ofstream fout(filename.c_str());
 
   for(unsigned int i = 0; i < v.size(); ++i)
-    {
+  {
+    fout << v[i] << " ";
+  }
+
+  fout.close();
+}
+
+template<typename T>
+void WriteVectorToFileLines(const std::vector<T> &v, const std::string& filename)
+{
+  std::ofstream fout(filename.c_str());
+
+  for(unsigned int i = 0; i < v.size(); ++i)
+  {
     fout << v[i] << std::endl;
-    }
+  }
 
   fout.close();
 }

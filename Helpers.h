@@ -20,8 +20,9 @@
 #define HELPERS_H
 
 // STL
-#include <string>
+#include <cmath>
 #include <queue>
+#include <string>
 #include <stack>
 #include <type_traits> // for enable_if, is_fundamental, and decltype (C++11)
 #include <vector>

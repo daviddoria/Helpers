@@ -234,7 +234,7 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
 struct HSV_H_Difference
 {
   template <class TValue>
-  TValue operator()(const TValue& a, const TValue& b)
+  TValue operator()(const TValue& a, const TValue& b) const
   {
     TValue minValue = std::min(a,b);
     TValue maxValue = std::max(a,b);

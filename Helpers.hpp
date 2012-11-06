@@ -216,6 +216,16 @@ bool Contains(const std::vector<T>& vec, const T& value)
 }
 
 template <typename TVector>
+void Output(const TVector& vec)
+{
+  for(unsigned int i = 0; i < vec.size(); ++i)
+  {
+    std::cout << vec[i] << " ";
+  }
+  std::cout << std::endl;
+}
+
+template <typename TVector>
 void Output(const TVector& vec, const std::string& vectorName)
 {
   std::cout << vectorName << ":" << std::endl;

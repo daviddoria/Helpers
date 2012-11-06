@@ -1,21 +1,33 @@
+/*=========================================================================
+ *
+ *  Copyright David Doria 2012 daviddoria@gmail.com
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+
+#ifndef ParallelSort_HPP
+#define ParallelSort_HPP
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <string>
 
-namespace ParallelSort
-{
-
 template <typename T>
-bool operator<(IndexedValue<T> element1, IndexedValue<T> element2)
+typename ParallelSort<T>::IndexedVector ParallelSort<T>::CreateInternalData(const VectorType& v)
 {
-  return element1.value < element2.value;
-}
-
-template <typename T>
-std::vector<IndexedValue<T> > CreateInternalData(const std::vector<T>& v)
-{
-  std::vector<IndexedValue<T> > pairs(v.size());
+  IndexedVector pairs(v.size());
   for(unsigned int i = 0; i < v.size(); i++)
     {
     pairs[i].index = i;
@@ -25,9 +37,9 @@ std::vector<IndexedValue<T> > CreateInternalData(const std::vector<T>& v)
 }
 
 template <typename T>
-std::vector<IndexedValue<T> > ParallelSortAscending(const std::vector<T>& v)
+typename ParallelSort<T>::IndexedVector ParallelSort<T>::ParallelSortAscending(const VectorType& v)
 {
-  std::vector<IndexedValue<T> > internalData = CreateInternalData(v);
+  IndexedVector internalData = CreateInternalData(v);
 
   std::sort(internalData.begin(), internalData.end());
 
@@ -35,13 +47,13 @@ std::vector<IndexedValue<T> > ParallelSortAscending(const std::vector<T>& v)
 }
 
 template <typename T>
-std::vector<IndexedValue<T> > ParallelSortDescending(const std::vector<T>& v)
+typename ParallelSort<T>::IndexedVector ParallelSort<T>::ParallelSortDescending(const VectorType& v)
 {
-  std::vector<IndexedValue<T> > internalData = CreateInternalData(v);
+  IndexedVector internalData = CreateInternalData(v);
 
   std::sort(internalData.rbegin(), internalData.rend());
 
   return internalData;
 }
 
-} // end namespace
+#endif

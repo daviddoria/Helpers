@@ -173,9 +173,22 @@ void WriteVectorToFile(const std::vector<T> &v, const std::string& filename)
   std::ofstream fout(filename.c_str());
 
   for(unsigned int i = 0; i < v.size(); ++i)
-    {
+  {
+    fout << v[i] << " ";
+  }
+
+  fout.close();
+}
+
+template<typename T>
+void WriteVectorToFileLines(const std::vector<T> &v, const std::string& filename)
+{
+  std::ofstream fout(filename.c_str());
+
+  for(unsigned int i = 0; i < v.size(); ++i)
+  {
     fout << v[i] << std::endl;
-    }
+  }
 
   fout.close();
 }
@@ -315,9 +328,16 @@ typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(c
 template <class TQueue>
 void KeepTopN(TQueue& q, const unsigned int numberToKeep)
 {
+  if(numberToKeep > q.size())
+  {
+    std::cerr << "Warning: Helpers::KeepTopN requested to keep " << numberToKeep
+              << ", but there are only " << q.size() << " nodes." << std::endl;
+  }
+
   TQueue newQueue;
 
-  for(unsigned int i = 0; i < numberToKeep; ++i)
+  unsigned int originalQueueSize = q.size();
+  for(unsigned int i = 0; i < std::min(numberToKeep, originalQueueSize); ++i)
   {
     newQueue.push(q.top());
     q.pop();

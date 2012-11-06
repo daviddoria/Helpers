@@ -1,20 +1,23 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(Helpers)
-
-if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
-  set(Helpers_includes ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
-  message("Helpers submodule used from ${CMAKE_CURRENT_SOURCE_DIR}")
-endif()
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # This is needed for shared_ptr and the trick using enable_if and
 # if_fundamental to allow scalars
 # to be treated as the 0th component of a vector.
 if(UNIX)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 endif(UNIX)
 
+# Give the compiler all of the required include directories
+include_directories(${Helpers_include_dirs})
+
+# Create the library
 add_library(Helpers Helpers.cpp)
+set(Helpers_libraries ${Helpers_libraries} Helpers)
+
+# Add non-compiled files to the project
 add_custom_target(HelpersSources SOURCES ContainerInterface.h
 ContainerInterface.hpp
 Helpers.hpp
@@ -24,7 +27,19 @@ Statistics.h
 Statistics.hpp
 TypeTraits.h)
 
-SET(Helpers_BuildTests OFF CACHE BOOL "Build Helpers tests?")
+# Allow this project to be detected and used as a submodule
+set(Helpers_include_dirs ${Helpers_include_dirs} ${CMAKE_CURRENT_SOURCE_DIR})
+set_property(GLOBAL PROPERTY HelpersIncludeDirs ${Helpers_include_dirs})
+set_property(GLOBAL PROPERTY HelpersLibs ${Helpers_libraries})
+
+# Build the tests if requested
+option(Helpers_BuildTests "Build Helpers tests?" OFF)
 if(Helpers_BuildTests)
   add_subdirectory(Tests)
 endif(Helpers_BuildTests)
+
+# Display where this code was used from (if it is used as a submodule, there may be multiple instances of this submodule in the project, only the first of which is used)
+option(Helpers_ShowSubmoduleLocation "Show the path from which Helpers was used?" OFF)
+if(Helpers_ShowSubmoduleLocation)
+  message("Helpers used from ${CMAKE_CURRENT_SOURCE_DIR}")
+endif(Helpers_ShowSubmoduleLocation)

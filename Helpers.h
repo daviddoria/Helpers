@@ -20,8 +20,9 @@
 #define HELPERS_H
 
 // STL
-#include <string>
+#include <cmath>
 #include <queue>
+#include <string>
 #include <stack>
 #include <type_traits> // for enable_if, is_fundamental, and decltype (C++11)
 #include <vector>
@@ -76,19 +77,6 @@ bool StringsMatch(const std::string&, const std::string&);
   * RoundAwayFromZero(-.2) = -1
   * (Normally ceil(-.2) = 0 */
 float RoundAwayFromZero(const float number);
-
-/** Convert spherical coordinates to cartesian coordinates. */
-void
-sphericalToCartesian( double & x, double & y, double & z,
-                      double   r, double   theta, double   phi );
-
-/** Convert cartesian coordinates to spherical coordinates. */
-void
-cartesianToSpherical( double & r, double & theta, double & phi,
-                      double   x, double   y, double   z );
-
-/** Print (to the screen) the sphereical coordinates corresponding to a cartesian point. */
-void PrintSpherical(double   x, double   y, double   z );
 
 /** Generate a random integer between 'minValue' and 'maxValue' */
 int RandomInt(const int minValue, const int maxValue);
@@ -179,6 +167,10 @@ void OutputNode(const TNode& a);
 template<typename T>
 void WriteVectorToFile(const std::vector<T> &v, const std::string& filename);
 
+/** Write the elements of 'v' to separate lines of a text file called 'filename'. */
+template<typename T>
+void WriteVectorToFileLines(const std::vector<T> &v, const std::string& filename);
+
 /** Output all of the .first values. */
 template <typename T>
 void OutputFirst(const T& vec);
@@ -242,7 +234,7 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
 struct HSV_H_Difference
 {
   template <class TValue>
-  TValue operator()(const TValue& a, const TValue& b)
+  TValue operator()(const TValue& a, const TValue& b) const
   {
     TValue minValue = std::min(a,b);
     TValue maxValue = std::max(a,b);

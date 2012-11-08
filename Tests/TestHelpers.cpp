@@ -22,6 +22,8 @@ static void TestMinOfAllIndices();
 static void TestSphericalToCartesian();
 static void TestCartesianToSpherical();
 
+static void TestHasBracketOperator();
+
 int main()
 {
   TestGetFileExtension();
@@ -42,6 +44,8 @@ int main()
 
   TestSphericalToCartesian();
   TestCartesianToSpherical();
+
+  TestHasBracketOperator();
 
   return 0;
 }
@@ -178,31 +182,42 @@ void TestMinOfAllIndices()
 
 void TestSphericalToCartesian()
 {
-  std::cout << "TestSphericalToCartesian()" << std::endl;
-  double r = 1.0;
-  double theta = 0.0;
-  double phi = 0.0;
+//  std::cout << "TestSphericalToCartesian()" << std::endl;
+//  double r = 1.0;
+//  double theta = 0.0;
+//  double phi = 0.0;
 
-  double x, y, z;
+//  double x, y, z;
 
-  Helpers::SphericalToCartesian(x, y, z, r, theta, phi);
+//  Helpers::SphericalToCartesian(x, y, z, r, theta, phi);
 
-  std::cout << "Spherical: r=" << r << " theta=" << theta << " phi=" << phi
-            << " to Cartesian: x=" << x << " y=" << y << " z=" << z << std::endl;
+//  std::cout << "Spherical: r=" << r << " theta=" << theta << " phi=" << phi
+//            << " to Cartesian: x=" << x << " y=" << y << " z=" << z << std::endl;
 }
 
 void TestCartesianToSpherical()
 {
-  std::cout << "TestCartesianToSpherical()" << std::endl;
-  double r, theta, phi;
+//  std::cout << "TestCartesianToSpherical()" << std::endl;
+//  double r, theta, phi;
 
-  double x = 0.0;
-  double y = 0.0;
-  double z = 1.0;
+//  double x = 0.0;
+//  double y = 0.0;
+//  double z = 1.0;
 
-  Helpers::CartesianToSpherical(r, theta, phi, x, y, z);
+//  Helpers::CartesianToSpherical(r, theta, phi, x, y, z);
 
-  std::cout << "Cartesian: x=" << x << " y=" << y << " z=" << z
-            << " to Spherical: r=" << r << " theta=" << theta << " phi=" << phi  << std::endl;
+//  std::cout << "Cartesian: x=" << x << " y=" << y << " z=" << z
+//            << " to Spherical: r=" << r << " theta=" << theta << " phi=" << phi  << std::endl;
 
+}
+
+void TestHasBracketOperator()
+{
+//  typedef std::vector<float> VectorType;
+//  static_assert(Helpers::HasBracketOperator<VectorType>::value,
+//                "VectorType does not have an operator[]!");
+
+//  typedef std::vector<int> VectorType;
+//  static_assert(Helpers::HasBracketOperator<VectorType>::value,
+//                "VectorType does not have an operator[]!");
 }

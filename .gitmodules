@@ -1,0 +1,3 @@
+[submodule "CMakeHelpers"]
+	path = CMakeHelpers
+	url = https://github.com/daviddoria/CMakeHelpers.git

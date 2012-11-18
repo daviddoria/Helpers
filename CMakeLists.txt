@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 project(Helpers)
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+add_subdirectory(CMakeHelpers)
+
 # This is needed for shared_ptr and the trick using enable_if and
 # if_fundamental to allow scalars
 # to be treated as the 0th component of a vector.
@@ -27,19 +29,10 @@ Statistics.h
 Statistics.hpp
 TypeTraits.h)
 
-# Allow this project to be detected and used as a submodule
-set(Helpers_include_dirs ${Helpers_include_dirs} ${CMAKE_CURRENT_SOURCE_DIR})
-set_property(GLOBAL PROPERTY HelpersIncludeDirs ${Helpers_include_dirs})
-set_property(GLOBAL PROPERTY HelpersLibs ${Helpers_libraries})
+CreateSubmodule(Helpers)
 
 # Build the tests if requested
 option(Helpers_BuildTests "Build Helpers tests?" OFF)
 if(Helpers_BuildTests)
   add_subdirectory(Tests)
 endif(Helpers_BuildTests)
-
-# Display where this code was used from (if it is used as a submodule, there may be multiple instances of this submodule in the project, only the first of which is used)
-option(Helpers_ShowSubmoduleLocation "Show the path from which Helpers was used?" OFF)
-if(Helpers_ShowSubmoduleLocation)
-  message("Helpers used from ${CMAKE_CURRENT_SOURCE_DIR}")
-endif(Helpers_ShowSubmoduleLocation)

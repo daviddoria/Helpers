@@ -33,6 +33,31 @@
 namespace Helpers
 {
 
+template<class T>
+bool FuzzyCompare(const T& a, const T& b)
+{
+  return std::abs(a - b) < std::numeric_limits<T>::epsilon();
+}
+
+template<class T>
+bool FuzzyCompare(const std::vector<T>& a, const std::vector<T>& b)
+{
+  if(a.size() != b.size())
+  {
+    return false;
+  }
+
+  for(unsigned int i = 0; i < a.size(); ++i)
+  {
+    if(!FuzzyCompare(a[i], b[i]))
+    {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 template <class T>
 bool IsNaN(const T a)
 {

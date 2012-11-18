@@ -36,6 +36,12 @@ namespace Helpers
 ////////////////// Non-template function declarations (defined in Helpers.cpp) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+template<class T>
+bool FuzzyCompare(const T& a, const T& b);
+
+template<class T>
+bool FuzzyCompare(const std::vector<T>& a, const std::vector<T>& b);
+
 /** Ignore a piece of a stream. */
 std::istream& InlineIgnore(std::istream& ss);
 
@@ -99,11 +105,13 @@ unsigned int Argmax(const T& vec);
 
 /** Determine the value of the smallest element of a specified 'index' of a collection of multicomponent objects. */
 template <class TContainer>
-typename TypeTraits<typename TContainer::value_type>::ComponentType MinOfIndex(const TContainer& container, const unsigned int index);
+typename TypeTraits<typename TContainer::value_type>::ComponentType
+MinOfIndex(const TContainer& container, const unsigned int index);
 
 /** Determine the value of the largest element of a specified 'index' of a collection of multicomponent objects. */
 template <class TContainer>
-typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(const TContainer& container, const unsigned int index);
+typename TypeTraits<typename TContainer::value_type>::ComponentType
+MaxOfIndex(const TContainer& container, const unsigned int index);
 
 /** Determine the value of the smallest element of each index of a collection of multicomponent objects.
   * We cannot return the 'output' (so instead, we return it by reference) because it must be pre-sized and passed in because the
@@ -111,21 +119,25 @@ typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(c
   * This is the generic version (that requires TOutput to have an operator[]() (i.e. it is multi-component).
   */
 template <class TContainer, typename TOutput>
-void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0);
+void MinOfAllIndices(const TContainer& container, TOutput& output,
+                     typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0);
 
 /**
 * This is the special version for scalar TOutput.
 */
 template <class TContainer, typename TOutput>
-void MinOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0);
+void MinOfAllIndices(const TContainer& container, TOutput& output,
+                     typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0);
 
 /** Determine the value of the largest element of each index of a collection of multicomponent objects. */
 template <class TContainer, typename TOutput>
-void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0);
+void MaxOfAllIndices(const TContainer& container, TOutput& output,
+                     typename std::enable_if<!std::is_pod<TOutput>::value >::type* = 0);
 
 /** Determine the value of the largest element of each index of a collection of multicomponent objects. This is a special version for scalar TOutput.*/
 template <class TContainer, typename TOutput>
-void MaxOfAllIndices(const TContainer& container, TOutput& output, typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0);
+void MaxOfAllIndices(const TContainer& container, TOutput& output,
+                     typename std::enable_if<std::is_pod<TOutput>::value >::type* = 0);
 
 /** Determine the value of the smallest element. */
 template <class T>
@@ -141,7 +153,8 @@ void NormalizeVectorInPlace(TVector& v);
 
 /** Divide every element of a vector by the sum of the vector. */
 template<typename T>
-std::vector<typename TypeTraits<T>::LargerType> NormalizeVector(const std::vector<T>& v);
+std::vector<typename TypeTraits<T>::LargerType>
+NormalizeVector(const std::vector<T>& v);
 
 /** Compute the median of the elements in 'v'. */
 template<typename T>
@@ -195,7 +208,8 @@ bool Contains(const std::vector<T>& vec, const T& value);
 template <typename TVector>
 void Output(const TVector& vec);
 
-/** Compare all of the elements of 'vec' to 'value' and determine which one has the smallest distance. */
+/** Compare all of the elements of 'vec' to 'value' and determine
+  * which one has the smallest distance. */
 template <typename T>
 unsigned int ClosestIndex(const std::vector<T>& vec, const T& value);
 
@@ -227,9 +241,11 @@ T Force0to255(const T& value);
 
 /** Computed a weighted sum of 'values' using the associated 'weights'.*/
 template <class TValue>
-TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights);
+TValue WeightedAverage(const std::vector<TValue>& values,
+                       const std::vector<float>& weights);
 
-/** When comparing H values, you cannot simply subtract them, because they wrap. That is, 0.99 is very very close in
+/** When comparing H values, you cannot simply subtract them,
+  * because they wrap. That is, 0.99 is very very close in
   * hue to 0.01, but their standard difference is very large.*/
 struct HSV_H_Difference
 {

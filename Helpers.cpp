@@ -97,13 +97,13 @@ bool StringsMatch(const std::string& a, const std::string& b)
 {
   // STL compare returns 0 if strings match. This is unintuitive, so this function returns the expected value.
   if(a.compare(b) == 0)
-    {
+  {
     return true;
-    }
+  }
   else
-    {
+  {
     return false;
-    }
+  }
 }
 
 int RandomInt(const int minValue, const int maxValue)

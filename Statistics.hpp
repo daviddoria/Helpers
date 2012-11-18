@@ -139,7 +139,7 @@ typename TypeTraits<TVector>::LargerComponentType Correlation(const TVector& v1,
   float varianceV1 = Variance(v1);
   float varianceV2 = Variance(v2);
 
-  for(int i = 0; i < Helpers::length(v1); ++i)
+  for(unsigned int i = 0; i < Helpers::length(v1); ++i)
   {
     numerator += (v1[i] - meanV1)*(v2[i] - meanV2);
   }

@@ -34,5 +34,6 @@ CreateSubmodule(Helpers)
 # Build the tests if requested
 option(Helpers_BuildTests "Build Helpers tests?" OFF)
 if(Helpers_BuildTests)
+  ENABLE_TESTING()
   add_subdirectory(Tests)
 endif(Helpers_BuildTests)

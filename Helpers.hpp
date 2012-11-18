@@ -34,14 +34,14 @@ namespace Helpers
 {
 
 template<typename TA, typename TB>
-bool FuzzyCompare(const TA& a, const TB& b)
+bool FuzzyCompare(const TA& a, const TB& b, const TA& epsilon)
 {
-  return std::abs(a - b) < std::min(std::numeric_limits<TA>::epsilon(),
-                                    std::numeric_limits<TB>::epsilon());
+  return std::abs(a - b) < epsilon;
 }
 
 template<typename TA, typename TB>
-bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b)
+bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b,
+                  const TA& epsilon)
 {
   if(a.size() != b.size())
   {
@@ -50,7 +50,7 @@ bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b)
 
   for(unsigned int i = 0; i < a.size(); ++i)
   {
-    if(!FuzzyCompare(a[i], b[i]))
+    if(!FuzzyCompare(a[i], b[i], epsilon))
     {
       return false;
     }
@@ -62,12 +62,18 @@ bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b)
 template <class T>
 bool IsNaN(const T a)
 {
+  static_assert(std::numeric_limits<T>::has_quiet_NaN,
+                "IsNaN can only be used with objects that have a NaN value defined!");
+
   return a != a;
 }
 
 template <class T>
 bool ContainsNaN(const T a)
 {
+  static_assert(std::numeric_limits<typename T::value_type>::has_quiet_NaN,
+                "ContainsNaN can only be used with containers whose element type has a NaN value defined!");
+
   for(unsigned int i = 0; i < a.size(); ++i)
   {
     if(IsNaN(a[i]))

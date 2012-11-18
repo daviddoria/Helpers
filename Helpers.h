@@ -21,6 +21,7 @@
 
 // STL
 #include <cmath>
+#include <limits> // for epsilon()
 #include <queue>
 #include <string>
 #include <stack>
@@ -37,10 +38,12 @@ namespace Helpers
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename TA, typename TB>
-bool FuzzyCompare(const TA& a, const TB& b);
+bool FuzzyCompare(const TA& a, const TB& b,
+                  const TA& epsilon = std::numeric_limits<TA>::epsilon());
 
 template<typename TA, typename TB>
-bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b);
+bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b,
+                  const TA& epsilon = std::numeric_limits<TA>::epsilon());
 
 /** Ignore a piece of a stream. */
 std::istream& InlineIgnore(std::istream& ss);

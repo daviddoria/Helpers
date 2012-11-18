@@ -2,6 +2,7 @@
 
 // STL
 #include <sstream>
+#include <limits>
 
 static bool TestFuzzyCompare();
 
@@ -17,9 +18,11 @@ static bool TestInlineIgnore();
 
 static bool TestWeightedAverage();
 
-static bool TestNormalizeVectorInPlace();
+static bool TestNormalizeVectorInPlace_Float();
+static bool TestNormalizeVectorInPlace_Int();
 
-static bool TestNormalizeVector();
+static bool TestNormalizeVector_Float();
+static bool TestNormalizeVector_Int();
 
 static bool TestMinOfIndex();
 
@@ -61,13 +64,9 @@ static bool TestMaxOfIndex();
 
 static bool TestVectorMedian();
 
-static bool TestConvertFrom();
-
 static bool TestSum();
 
 static bool TestVectorSumOfAbsoluteDifferences();
-
-static bool TestOutputNode();
 
 static bool TestWriteVectorToFile();
 
@@ -89,6 +88,8 @@ static bool TestContainsNaN();
 
 static bool TestKeepTopN();
 
+static bool TestKeepFrontN();
+
 static bool TestDoesQueueContain();
 
 static bool TestDoesStackContain();
@@ -99,7 +100,7 @@ static bool TestHSV_H_Difference();
 
 int main()
 {
-  bool AllTestsPass = false;
+  bool AllTestsPass = true;
 
   AllTestsPass &= TestFuzzyCompare();
 
@@ -112,9 +113,11 @@ int main()
 
   AllTestsPass &= TestWeightedAverage();
 
-  AllTestsPass &= TestNormalizeVectorInPlace();
+  AllTestsPass &= TestNormalizeVectorInPlace_Int();
+  AllTestsPass &= TestNormalizeVectorInPlace_Float();
 
-  AllTestsPass &= TestNormalizeVector();
+  AllTestsPass &= TestNormalizeVector_Int();
+  AllTestsPass &= TestNormalizeVector_Float();
 
   AllTestsPass &= TestMinOfIndex();
 
@@ -159,13 +162,9 @@ int main()
 
   AllTestsPass &= TestVectorMedian();
 
-  AllTestsPass &= TestConvertFrom();
-
   AllTestsPass &= TestSum();
 
   AllTestsPass &= TestVectorSumOfAbsoluteDifferences();
-
-  AllTestsPass &= TestOutputNode();
 
   AllTestsPass &= TestWriteVectorToFile();
 
@@ -187,6 +186,8 @@ int main()
 
   AllTestsPass &= TestKeepTopN();
 
+  AllTestsPass &= TestKeepFrontN();
+
   AllTestsPass &= TestDoesQueueContain();
 
   AllTestsPass &= TestDoesStackContain();
@@ -197,6 +198,7 @@ int main()
 
   if(AllTestsPass)
   {
+    std::cerr << "All tests passed!" << std::endl;
     return EXIT_SUCCESS;
   }
   else
@@ -206,55 +208,99 @@ int main()
   }
 }
 
-bool TestNormalizeVector()
+bool TestNormalizeVector_Int()
 {
-  std::cout << "TestNormalizeVector()" << std::endl;
+  std::cout << "TestNormalizeVector_Int()" << std::endl;
 
-  bool allPass = true;
-
-  // Test with same type
-  {
-  std::vector<float> a;
-  a.push_back(1);
-  a.push_back(2);
-  a.push_back(3);
+  std::vector<int> a = {1,2,3};
 
   std::vector<float> normalized = Helpers::NormalizeVector(a);
   // Octave: a=[1 2 3]; b=a/norm(a)
   std::vector<float> correctAnswer = {0.26726, 0.53452, 0.80178};
-  allPass &= Helpers::FuzzyCompare(normalized, correctAnswer);
-  }
+  bool pass = Helpers::FuzzyCompare(normalized, correctAnswer, 1e-4f);
 
-  // Test with different type
+  if(!pass)
   {
-  std::vector<int> a;
-  a.push_back(1);
-  a.push_back(2);
-  a.push_back(3);
-
-  std::vector<float> normalized = Helpers::NormalizeVector(a);
-  // Octave: a=[1 2 3]; b=a/norm(a)
-  std::vector<float> correctAnswer = {0.26726, 0.53452, 0.80178};
-  allPass &= Helpers::FuzzyCompare(normalized, correctAnswer);
+    std::cerr << "TestNormalizeVector_Int failed!" << std::endl;
+    return false;
   }
 
-  return allPass;
+  return true;
 }
 
-bool TestNormalizeVectorInPlace()
+bool TestNormalizeVector_Float()
 {
-  std::cout << "TestNormalizeVectorInPlace()" << std::endl;
+  std::cout << "TestNormalizeVector_Float()" << std::endl;
 
-  std::vector<float> a;
-  a.push_back(1);
-  a.push_back(2);
-  a.push_back(3);
+  std::vector<float> a = {1,2,3};
+
+  std::vector<float> normalized = Helpers::NormalizeVector(a);
+  // Octave: a=[1 2 3]; b=a/norm(a)
+  std::vector<float> correctAnswer = {0.26726, 0.53452, 0.80178};
+  bool pass = Helpers::FuzzyCompare(normalized, correctAnswer, 1e-4f);
+
+  if(!pass)
+  {
+    std::cerr << "TestNormalizeVector_Float failed!" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool TestNormalizeVectorInPlace_Int()
+{
+  // This should fail to compile because of a static assertion
+  // to make sure that the vector being normalized has a floating
+  // point component type
+
+//  std::cout << "TestNormalizeVectorInPlace_Int()" << std::endl;
+
+//  std::vector<int> a;
+//  a.push_back(1);
+//  a.push_back(2);
+//  a.push_back(3);
+
+//  Helpers::NormalizeVectorInPlace(a);
+
+//  // Octave: a=[1 2 3]; b=a/norm(a)
+//  std::vector<float> correctAnswer = {0.26726, 0.53452, 0.80178};
+
+//  bool pass = Helpers::FuzzyCompare(a, correctAnswer);
+
+//  if(!pass)
+//  {
+//    std::cerr << "TestNormalizeVectorInPlace_Int failed!" << std::endl;
+//  }
+
+//  return pass;
+
+  return true;
+}
+
+bool TestNormalizeVectorInPlace_Float()
+{
+  std::cout << "TestNormalizeVectorInPlace_Float()" << std::endl;
+
+  std::vector<float> a = {1,2,3};
 
   Helpers::NormalizeVectorInPlace(a);
 
   // Octave: a=[1 2 3]; b=a/norm(a)
   std::vector<float> correctAnswer = {0.26726, 0.53452, 0.80178};
-  return Helpers::FuzzyCompare(a, correctAnswer);
+
+  bool pass = Helpers::FuzzyCompare(a, correctAnswer, 1e-4f);
+
+  if(!pass)
+  {
+    std::cerr << "TestNormalizeVectorInPlace_Float failed!"
+              << " result was: " << a[0] << " " << a[1] << " " << a[2]
+              << " but should have been "
+              << correctAnswer[0] << " " << correctAnswer[1] << " " << correctAnswer[2]
+              << std::endl;
+  }
+
+  return pass;
 }
 
 bool TestGetFileExtension()
@@ -267,6 +313,7 @@ bool TestGetFileExtension()
 
   if(!Helpers::StringsMatch(extension, "txt"))
   {
+    std::cerr << "TestGetFileExtension failed!" << std::endl;
     return false;
   }
 
@@ -288,6 +335,7 @@ bool TestSortByFirstAccending()
   {
     if(correct[i] != v[i].first)
     {
+      std::cerr << "TestSortByFirstAccending failed!" << std::endl;
       return false;
     }
   }
@@ -310,6 +358,7 @@ bool TestSortBySecondAccending()
   {
     if(correct[i] != v[i].second)
     {
+      std::cerr << "TestSortBySecondAccending failed!" << std::endl;
       return false;
     }
   }
@@ -329,6 +378,7 @@ bool TestInlineIgnore()
 //  std::cout << a << " " << b << std::endl;
   if((a != 1) || (b != 2) )
   {
+    std::cerr << "TestInlineIgnore failed!" << std::endl;
     return false;
   }
 
@@ -338,15 +388,9 @@ bool TestInlineIgnore()
 bool TestWeightedAverage()
 {
   std::cout << "TestWeightedAverage()" << std::endl;
-  std::vector<int> values;
-  values.push_back(1);
-  values.push_back(2);
-  values.push_back(3);
+  std::vector<int> values = {1,2,3};
 
-  std::vector<float> weights;
-  weights.push_back(1);
-  weights.push_back(1);
-  weights.push_back(2);
+  std::vector<float> weights = {1,1,2};
 
   float weightedAverage = Helpers::WeightedAverage(values, weights);
 
@@ -355,8 +399,12 @@ bool TestWeightedAverage()
 
 //  std::cout << "WeightedAverage: " << weightedAverage << std::endl;
 
-  if(weightedAverage != 2.25)
+  float correct = 2.25;
+
+  if(weightedAverage != correct)
   {
+    std::cerr << "TestWeightedAverage failed: was " << weightedAverage <<
+                 " but should have been " << correct << "!" << std::endl;
     return false;
   }
 
@@ -382,6 +430,7 @@ bool TestMinOfIndex()
 
   if(minComponent2 != 4)
   {
+    std::cerr << "TestMinOfIndex failed!" << std::endl;
     return false;
   }
 
@@ -418,6 +467,7 @@ bool TestMaxOfAllIndices_Vector()
   {
     if(maxComponents[i] != 9)
     {
+      std::cerr << "TestMaxOfAllIndices_Vector failed!" << std::endl;
       return false;
     }
   }
@@ -444,6 +494,7 @@ bool TestMaxOfAllIndices_Scalar()
 //  std::cout << "maxValue: " << maxValue << std::endl;
   if(maxValue != 9)
   {
+    std::cerr << "TestMaxOfAllIndices_Scalar failed!" << std::endl;
     return false;
   }
 
@@ -479,6 +530,7 @@ bool TestMinOfAllIndices_Vector()
   {
     if(minComponents[i] != 4)
     {
+      std::cerr << "TestMinOfAllIndices_Vector failed!" << std::endl;
       return false;
     }
   }
@@ -505,6 +557,7 @@ bool TestMinOfAllIndices_Scalar()
 //  std::cout << "minValue: " << minValue << std::endl;
   if(minValue != 4)
   {
+    std::cerr << "TestMinOfAllIndices_Scalar failed!" << std::endl;
     return false;
   }
 
@@ -527,7 +580,14 @@ bool TestNegativeLog()
 {
   float negativeLog = Helpers::NegativeLog(1.0f);
 
-  return Helpers::FuzzyCompare(negativeLog, 0.0f);
+  bool pass = Helpers::FuzzyCompare(negativeLog, 0.0f);
+
+  if(!pass)
+  {
+    std::cerr << "TestMinOfAllIndices_Scalar failed!" << std::endl;
+  }
+
+  return pass;
 }
 
 bool TestGetPath()
@@ -535,6 +595,7 @@ bool TestGetPath()
   std::string path = Helpers::GetPath("/home/doriad/Test/file.png");
   if(!Helpers::StringsMatch(path, "/home/doriad/Test/"))
   {
+    std::cerr << "TestGetPath failed!" << std::endl;
     return false;
   }
 
@@ -546,6 +607,7 @@ bool TestReplaceFileExtension()
   std::string newFile = Helpers::ReplaceFileExtension("/home/doriad/Test/file.png", "jpg");
   if(!Helpers::StringsMatch(newFile, "/home/doriad/Test/file.jpg"))
   {
+    std::cerr << "TestReplaceFileExtension failed!" << std::endl;
     return false;
   }
 
@@ -557,6 +619,7 @@ bool TestGetSequentialFileName()
   std::string fileName = Helpers::GetSequentialFileName("Test", 2, "png", 3);
   if(!Helpers::StringsMatch(fileName, "Test_002.png"))
   {
+    std::cerr << "TestGetSequentialFileName failed!" << std::endl;
     return false;
   }
 
@@ -568,6 +631,7 @@ bool TestSideLengthFromRadius()
   unsigned int sideLength = Helpers::SideLengthFromRadius(2);
   if(sideLength != 5)
   {
+    std::cerr << "TestSideLengthFromRadius failed!" << std::endl;
     return false;
   }
 
@@ -576,8 +640,10 @@ bool TestSideLengthFromRadius()
 
 bool TestIsOdd()
 {
-  if(!Helpers::IsOdd(3))
+  if(!Helpers::IsOdd(3) ||
+     Helpers::IsOdd(4))
   {
+    std::cerr << "TestIsOdd failed!" << std::endl;
     return false;
   }
 
@@ -589,6 +655,7 @@ bool TestZeroPad()
   std::string padded = Helpers::ZeroPad(3, 4);
   if(!Helpers::StringsMatch("0003", padded))
   {
+    std::cerr << "TestZeroPad failed!" << std::endl;
     return false;
   }
 
@@ -601,6 +668,7 @@ bool TestStringsMatch()
   std::string myName2 = "David";
   if(!Helpers::StringsMatch(myName, myName2))
   {
+    std::cerr << "TestStringsMatch failed!" << std::endl;
     return false;
   }
 
@@ -609,9 +677,29 @@ bool TestStringsMatch()
 
 bool TestRoundAwayFromZero()
 {
-  float rounded = Helpers::RoundAwayFromZero(2.1f);
-  if(rounded != 2.0f)
+  bool allPass = true;
+
+  float roundedPositive = Helpers::RoundAwayFromZero(2.1f);
+  float correctPositive = 3.0f;
+  if(roundedPositive != correctPositive)
   {
+    std::cerr << "TestRoundAwayFromZero roundedPositive was " << roundedPositive
+              << " but should have been " << correctPositive << "!" << std::endl;
+    allPass = false;
+  }
+
+  float roundedNegative = Helpers::RoundAwayFromZero(-2.1f);
+  float correctNegative = -3.0f;
+  if(roundedNegative != correctNegative)
+  {
+    std::cerr << "TestRoundAwayFromZero roundedNegative was " << roundedNegative
+              << " but should have been " << roundedNegative << "!" << std::endl;
+    allPass = false;
+  }
+
+  if(!allPass)
+  {
+    std::cerr << "TestRoundAwayFromZero failed!" << std::endl;
     return false;
   }
 
@@ -628,6 +716,7 @@ bool TestRandomInt()
     int randomInt = Helpers::RandomInt(min,max);
     if(randomInt < min || randomInt > max)
     {
+      std::cerr << "TestRandomInt failed!" << std::endl;
       return false;
     }
   }
@@ -638,159 +727,362 @@ bool TestRandomInt()
 
 bool TestIsValidRGB()
 {
-  throw std::runtime_error("TestIsValidRGB() Not yet implemented!");
-  return false;
+  if(!Helpers::IsValidRGB(2,3,4) ||
+     Helpers::IsValidRGB(-1,3,4) ||
+     Helpers::IsValidRGB(256,3,4) )
+  {
+    std::cerr << "TestIsValidRGB failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestArgmin()
 {
-  throw std::runtime_error("TestArgmin() Not yet implemented!");
-  return false;
+  std::vector<int> v = {4,2,0,1,6};
+
+  unsigned int minPosition = Helpers::Argmin(v);
+  if(minPosition != 2)
+  {
+    std::cerr << "TestArgmin failed!" << std::endl;
+    return false;
+  }
+  return true;
 }
 
 
 bool TestArgmax()
 {
-  throw std::runtime_error("TestArgmax() Not yet implemented!");
-  return false;
+  std::vector<int> v = {4,2,0,1,7,5,1};
+
+  unsigned int maxPosition = Helpers::Argmax(v);
+  if(maxPosition != 4)
+  {
+    std::cerr << "TestArgmax failed!" << std::endl;
+    return false;
+  }
+  return true;
 }
 
 bool TestMaxOfIndex()
 {
-  throw std::runtime_error("TestMaxOfIndex() Not yet implemented!");
-  return false;
+  std::cout << "TestMaxOfIndex()" << std::endl;
+  const unsigned int numberOfComponents = 3;
+  typedef std::vector<int> VectorType;
+  std::vector<VectorType> vectorOfVectors;
+  for(unsigned int i = 4; i < 10; ++i)
+  {
+    VectorType v(numberOfComponents);
+    v[0] = i;
+    v[1] = i;
+    v[2] = i;
+    vectorOfVectors.push_back(v);
+  }
+
+  VectorType::value_type maxOfIndex2 = Helpers::MaxOfIndex(vectorOfVectors, 2);
+
+  if(maxOfIndex2 != 9)
+  {
+    std::cerr << "TestMaxOfIndex failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestMin()
 {
-  throw std::runtime_error("TestMin() Not yet implemented!");
-  return false;
+  std::vector<int> v = {4,3,2};
+
+  if(Helpers::Min(v) != 2)
+  {
+    std::cerr << "TestMin failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestMax()
 {
-  throw std::runtime_error("TestMax() Not yet implemented!");
-  return false;
+  std::vector<int> v = {4,3,2};
+
+  if(Helpers::Max(v) != 4)
+  {
+    std::cerr << "TestMax failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestVectorMedian()
 {
-  throw std::runtime_error("TestVectorMedian() Not yet implemented!");
-  return false;
+  std::vector<int> v = {4,3,2};
+
+  if(Helpers::VectorMedian(v) != 3)
+  {
+    std::cerr << "TestVectorMedian failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
-bool TestConvertFrom()
-{
-  throw std::runtime_error("TestConvertFrom() Not yet implemented!");
-  return false;
-}
 
 bool TestSum()
 {
-  throw std::runtime_error("TestSum() Not yet implemented!");
-  return false;
+  std::vector<int> v = {4,3,2};
+
+  if(Helpers::Sum(v.begin(), v.end()) != 9)
+  {
+    std::cerr << "TestSum failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestVectorSumOfAbsoluteDifferences()
 {
-  throw std::runtime_error("TestVectorSumOfAbsoluteDifferences() Not yet implemented!");
-  return false;
-}
-
-bool TestOutputNode()
-{
-  throw std::runtime_error("TestOutputNode() Not yet implemented!");
-  return false;
+  std::vector<int> a = {1,2,3};
+  std::vector<int> b = {1,3,4};
+  if(Helpers::VectorSumOfAbsoluteDifferences(a,b) != 2)
+  {
+    std::cerr << "TestVectorSumOfAbsoluteDifferences failed!" << std::endl;
+    return false;
+  }
+  return true;
 }
 
 bool TestWriteVectorToFile()
 {
-  throw std::runtime_error("TestWriteVectorToFile() Not yet implemented!");
-  return false;
+  std::vector<int> v = {1,2,3};
+  Helpers::WriteVectorToFile(v, "file.txt");
+  return true;
 }
 
 bool TestWriteVectorToFileLines()
 {
-  throw std::runtime_error("TestWriteVectorToFileLines() Not yet implemented!");
-  return false;
+  std::vector<int> v = {1,2,3};
+  Helpers::WriteVectorToFileLines(v, "file.txt");
+  return true;
 }
 
 bool TestOutputFirst()
 {
-  throw std::runtime_error("TestOutputFirst() Not yet implemented!");
-  return false;
+  std::vector<std::pair<int, int> > v = {{1,2}, {3,4}};
+  Helpers::OutputFirst(v);
+  return true;
 }
 
 bool TestExtractFirst()
 {
-  throw std::runtime_error("TestExtractFirst() Not yet implemented!");
-  return false;
+  std::vector<std::pair<int, int> > v = {{1,2}, {3,4}};
+  std::vector<int> firsts = Helpers::ExtractFirst(v);
+  for(unsigned int i = 0; i < firsts.size(); ++i)
+  {
+    if(firsts[i] != v[i].first)
+    {
+      std::cerr << "TestExtractFirst failed!" << std::endl;
+      return false;
+    }
+  }
+  return true;
 }
 
 bool TestContains()
 {
-  throw std::runtime_error("TestContains() Not yet implemented!");
-  return false;
+  std::vector<int> v = {1,2,3};
+  if(!Helpers::Contains(v, 1) ||
+     Helpers::Contains(v, 4))
+  {
+    std::cerr << "TestContains failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestOutput()
 {
-  throw std::runtime_error("TestOutput() Not yet implemented!");
-  return false;
+  std::vector<int> v = {1,2,3};
+  Helpers::Output(v);
+  return true;
 }
 
 bool TestClosestIndex()
 {
-  throw std::runtime_error("TestClosestIndex() Not yet implemented!");
-  return false;
+  std::vector<float> v = {3.1f, 4.1f, 5.1f};
+  unsigned int closestIndex = Helpers::ClosestIndex(v, 4.0f);
+  if(closestIndex != 1)
+  {
+    std::cerr << "TestClosestIndex failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestIsNaN()
 {
-  throw std::runtime_error("TestIsNaN() Not yet implemented!");
-  return false;
+  if(Helpers::IsNaN(1.0f) ||
+     !Helpers::IsNaN(std::numeric_limits<float>::quiet_NaN()))
+  {
+    std::cerr << "TestIsNaN failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestContainsNaN()
 {
-  throw std::runtime_error("TestContainsNaN() Not yet implemented!");
-  return false;
+  // This intentionally fails - we cannot use NaN with 'int' values.
+//  std::vector<int> v_noNaN = {1,2,3};
+//  bool containsNaN = Helpers::ContainsNaN(v_noNaN);
+
+  bool pass = true;
+
+  // Check correctly contains NaN
+  std::vector<float> v_NaN = {1,std::numeric_limits<float>::quiet_NaN(),3};
+
+  if(!Helpers::ContainsNaN(v_NaN))
+  {
+    std::cerr << "TestContainsNaN failed: v_NaN was said to not contain a NaN but it does!" << std::endl;
+    pass = false;
+  }
+
+  // Check correctly does not contain NaN
+  std::vector<float> v_noNaN = {1,2,3};
+
+  if(Helpers::ContainsNaN(v_noNaN))
+  {
+    std::cerr << "TestContainsNaN failed: v_NaN was said to not contain a NaN but it does!" << std::endl;
+    pass = false;
+  }
+
+  return pass;
+}
+
+bool TestKeepFrontN()
+{
+  std::queue<int> q;
+  q.push(0);
+  q.push(1);
+  q.push(2);
+
+  Helpers::KeepFrontN(q, 2);
+
+  unsigned int counter = 0;
+  while(!q.empty())
+  {
+    q.pop();
+    counter++;
+  }
+
+  if(counter != 2)
+  {
+    std::cerr << "TestKeepFrontN failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestKeepTopN()
 {
-  throw std::runtime_error("TestKeepTopN() Not yet implemented!");
-  return false;
+  std::priority_queue<int> q;
+  q.push(0);
+  q.push(1);
+  q.push(2);
+
+  Helpers::KeepTopN(q, 2);
+
+  unsigned int counter = 0;
+  while(!q.empty())
+  {
+    q.pop();
+    counter++;
+  }
+
+  if(counter != 2)
+  {
+    std::cerr << "TestKeepTopN failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestDoesQueueContain()
 {
-  throw std::runtime_error("TestDoesQueueContain() Not yet implemented!");
-  return false;
+  std::queue<int> q;
+  q.push(0);
+  q.push(1);
+  q.push(2);
+
+  if(!Helpers::DoesQueueContain(q, 1) ||
+     Helpers::DoesQueueContain(q, 3))
+  {
+    std::cerr << "TestDoesQueueContain failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestDoesStackContain()
 {
-  throw std::runtime_error("TestDoesStackContain() Not yet implemented!");
-  return false;
+  std::stack<int> s;
+  s.push(0);
+  s.push(1);
+  s.push(2);
+
+  if(Helpers::DoesStackContain(s, 3) ||
+     !Helpers::DoesStackContain(s, 0))
+  {
+    std::cerr << "TestDoesStackContain failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestForce0to255()
 {
-  throw std::runtime_error("TestForce0to255() Not yet implemented!");
-  return false;
+  if(Helpers::Force0to255(-1) != 0 ||
+     Helpers::Force0to255(257) != 255 ||
+     Helpers::Force0to255(4) != 4)
+  {
+    std::cerr << "TestForce0to255 failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestHSV_H_Difference()
 {
-  throw std::runtime_error("TestHSV_H_Difference() Not yet implemented!");
-  return false;
+  Helpers::HSV_H_Difference hDifferenceFunctor;
+  float hDifference = hDifferenceFunctor(.9, .1);
+
+  if(hDifference != .2f)
+  {
+    std::cerr << "TestHSV_H_Difference failed!" << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool TestFuzzyCompare()
 {
-  if(!Helpers::FuzzyCompare(1.0, 1.0))
+  if(!Helpers::FuzzyCompare(1.0, 1.0) ||
+     Helpers::FuzzyCompare(1.0, 2.0))
   {
+    std::cerr << "TestFuzzyCompare failed!" << std::endl;
     return false;
   }
 

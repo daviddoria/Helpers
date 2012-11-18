@@ -268,11 +268,19 @@ struct HasBracketOperator
 {
 private:
 
+  // This version works for std::vector<T>
+  template <typename X>
+  static std::true_type
+  check(X*, typename std::enable_if<std::is_same<
+        decltype(std::declval<X const>().operator[](std::declval<typename X::size_type const &>())),
+                typename X::value_type const&>::value, void>::type * = 0);
+
   // Check for a specific const version of the operator[const int] overload
   template <typename X>
   static std::true_type
   check(X*, typename std::enable_if<
-        std::is_same<decltype(std::declval<X const>().operator[](std::declval<int const &>())), typename X::ValueType const&>
+        std::is_same<decltype(std::declval<X const>().operator[](std::declval<int const &>())),
+                    typename X::ValueType const&>
         ::value, void>::type * = 0);
 
   template<typename>

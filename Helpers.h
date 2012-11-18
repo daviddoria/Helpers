@@ -36,11 +36,11 @@ namespace Helpers
 ////////////////// Non-template function declarations (defined in Helpers.cpp) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-template<class T>
-bool FuzzyCompare(const T& a, const T& b);
+template<typename TA, typename TB>
+bool FuzzyCompare(const TA& a, const TB& b);
 
-template<class T>
-bool FuzzyCompare(const std::vector<T>& a, const std::vector<T>& b);
+template<typename TA, typename TB>
+bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b);
 
 /** Ignore a piece of a stream. */
 std::istream& InlineIgnore(std::istream& ss);
@@ -160,10 +160,6 @@ NormalizeVector(const std::vector<T>& v);
 template<typename T>
 typename T::value_type VectorMedian(T v);
 
-/** Convert any type with operator[] to any other type with operator[] */
-template<typename TTo, typename TFrom>
-TTo ConvertFrom(const TFrom& object);
-
 /** Sum the scalar elements in a container. */
 template<typename TForwardIterator>
 float Sum(const TForwardIterator first, const TForwardIterator last);
@@ -171,10 +167,6 @@ float Sum(const TForwardIterator first, const TForwardIterator last);
 /** Sum the corresponding differences of elements in two containers. */
 template<typename TVector>
 float VectorSumOfAbsoluteDifferences(const TVector& a, const TVector& b);
-
-/** Output a node. */
-template<typename TNode>
-void OutputNode(const TNode& a);
 
 /** Write the elements of 'v' to a space delimited text file called 'filename'. */
 template<typename T>
@@ -222,8 +214,12 @@ template <class T>
 bool ContainsNaN(const T a);
 
 /** Keep the top N elements of a priority queue.*/
+template <class TPriorityQueue>
+void KeepTopN(TPriorityQueue& q, const unsigned int numberToKeep);
+
+/** Keep the top N elements of a priority queue.*/
 template <class TQueue>
-void KeepTopN(TQueue& q, const unsigned int numberToKeep);
+void KeepFrontN(TQueue& q, const unsigned int numberToKeep);
 
 /** Check if a 'value' is present in a queue. Pass 'q' by value so we can pop
   * through it without affecting original data.*/
@@ -241,8 +237,8 @@ T Force0to255(const T& value);
 
 /** Computed a weighted sum of 'values' using the associated 'weights'.*/
 template <class TValue>
-TValue WeightedAverage(const std::vector<TValue>& values,
-                       const std::vector<float>& weights);
+typename TypeTraits<TValue>::LargerType WeightedAverage(const std::vector<TValue>& values,
+                                                        const std::vector<float>& weights);
 
 /** When comparing H values, you cannot simply subtract them,
   * because they wrap. That is, 0.99 is very very close in

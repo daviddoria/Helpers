@@ -33,14 +33,15 @@
 namespace Helpers
 {
 
-template<class T>
-bool FuzzyCompare(const T& a, const T& b)
+template<typename TA, typename TB>
+bool FuzzyCompare(const TA& a, const TB& b)
 {
-  return std::abs(a - b) < std::numeric_limits<T>::epsilon();
+  return std::abs(a - b) < std::min(std::numeric_limits<TA>::epsilon(),
+                                    std::numeric_limits<TB>::epsilon());
 }
 
-template<class T>
-bool FuzzyCompare(const std::vector<T>& a, const std::vector<T>& b)
+template<typename TA, typename TB>
+bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b)
 {
   if(a.size() != b.size())
   {
@@ -116,20 +117,23 @@ void NormalizeVectorInPlace(TVector& v)
 {
   typedef typename TVector::value_type TComponent;
 
-  static_assert(std::is_floating_point<TComponent>::value, "In NormalizeVectorInPlace, TComponent must be floating_point!");
+  static_assert(std::is_floating_point<TComponent>::value,
+                "In NormalizeVectorInPlace, TComponent must be floating_point!");
 
   // Compute the sum of the elements
   TComponent total = static_cast<TComponent>(0);
   for(unsigned int i = 0; i < v.size(); ++i)
-    {
-    total += v[i];
-    }
+  {
+    total += v[i] * v[i];
+  }
+
+  total = sqrt(total);
 
   // Divide each element by the sum
   for(unsigned int i = 0; i < v.size(); ++i)
-    {
+  {
     v[i] /= total;
-    }
+  }
 }
 
 template<typename T>
@@ -149,15 +153,6 @@ typename T::value_type VectorMedian(T v)
   int n = v.size() / 2;
   std::nth_element(v.begin(), v.begin()+n, v.end());
   return v[n];
-}
-
-template<typename TTo, typename TFrom>
-TTo ConvertFrom(const TFrom& object)
-{
-  TTo t;
-  t[0] = object[0];
-  t[1] = object[1];
-  return t;
 }
 
 template<typename TForwardIterator>
@@ -184,12 +179,6 @@ float VectorSumOfAbsoluteDifferences(const TVector& a, const TVector& b)
   }
 
   return sum;
-}
-
-template<typename TNode>
-void OutputNode(const TNode& a)
-{
-  std::cout << "(" << a[0] << ", " << a[1] << ")" << std::endl;
 }
 
 template<typename T>
@@ -350,8 +339,29 @@ typename TypeTraits<typename TContainer::value_type>::ComponentType MaxOfIndex(c
   return Max(componentContainer);
 }
 
+template <class TPriorityQueue>
+void KeepTopN(TPriorityQueue& q, const unsigned int numberToKeep)
+{
+  if(numberToKeep > q.size())
+  {
+    std::cerr << "Warning: Helpers::KeepTopN requested to keep " << numberToKeep
+              << ", but there are only " << q.size() << " nodes." << std::endl;
+  }
+
+  TPriorityQueue newQueue;
+
+  unsigned int originalQueueSize = q.size();
+  for(unsigned int i = 0; i < std::min(numberToKeep, originalQueueSize); ++i)
+  {
+    newQueue.push(q.top());
+    q.pop();
+  }
+
+  q = newQueue;
+}
+
 template <class TQueue>
-void KeepTopN(TQueue& q, const unsigned int numberToKeep)
+void KeepFrontN(TQueue& q, const unsigned int numberToKeep)
 {
   if(numberToKeep > q.size())
   {
@@ -364,7 +374,7 @@ void KeepTopN(TQueue& q, const unsigned int numberToKeep)
   unsigned int originalQueueSize = q.size();
   for(unsigned int i = 0; i < std::min(numberToKeep, originalQueueSize); ++i)
   {
-    newQueue.push(q.top());
+    newQueue.push(q.front());
     q.pop();
   }
 
@@ -431,7 +441,8 @@ T Force0to255(const T& value)
 }
 
 template <class TValue>
-TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<float>& weights)
+typename TypeTraits<TValue>::LargerType WeightedAverage(const std::vector<TValue>& values,
+                                                        const std::vector<float>& weights)
 {
   assert(values.size() == weights.size());
 
@@ -442,7 +453,7 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
   typename TypeTraits<TValue>::LargerType weightedSum = values[0];
   weightedSum = 0;
 
-  float weightSum = 0.0f;
+  typename TypeTraits<TValue>::LargerType weightSum = 0.0f;
   for(unsigned int i = 0; i < weights.size(); ++i)
   {
     weightSum += weights[i];
@@ -451,7 +462,7 @@ TValue WeightedAverage(const std::vector<TValue>& values, const std::vector<floa
     weightedSum += static_cast<typename TypeTraits<TValue>::LargerType>(values[i]) * weights[i]; 
   }
 
-  TValue weightedAverage = weightedSum / weightSum;
+  typename TypeTraits<TValue>::LargerType weightedAverage = weightedSum / weightSum;
 
   return weightedAverage;
 }

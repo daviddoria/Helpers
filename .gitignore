@@ -1,4 +1,4 @@
 *.kate-swp
 .fuse_hidden*
 *.orig
-*.user
+CMakeLists.txt.user*

@@ -38,8 +38,9 @@ namespace Helpers
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename TA, typename TB>
-bool FuzzyCompare(const TA& a, const TB& b,
-                  const TA& epsilon = std::numeric_limits<TA>::epsilon());
+typename std::enable_if<std::numeric_limits<TA>::is_specialized && std::numeric_limits<TB>::is_specialized, bool>::type
+FuzzyCompare(const TA& a, const TB& b,
+             const TA& epsilon = std::numeric_limits<TA>::epsilon());
 
 template<typename TA, typename TB>
 bool FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b,

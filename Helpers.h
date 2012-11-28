@@ -53,6 +53,12 @@ typename std::enable_if<std::numeric_limits<TA>::is_specialized && std::numeric_
 FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b,
              const TA& epsilon = std::numeric_limits<TA>::epsilon());
 
+/** Compare non numeric objects (like enums). This specialization ignores the epsilon parameter.
+  */
+template<typename TA, typename TB>
+typename std::enable_if<!(std::numeric_limits<TA>::is_specialized && std::numeric_limits<TB>::is_specialized), bool>::type
+FuzzyCompare(const TA& a, const TB& b);
+
 /** Ignore a piece of a stream. */
 std::istream& InlineIgnore(std::istream& ss);
 

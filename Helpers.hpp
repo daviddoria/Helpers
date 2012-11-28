@@ -60,6 +60,13 @@ FuzzyCompare(const std::vector<TA>& a, const std::vector<TB>& b, const TA& epsil
   return true;
 }
 
+template<typename TA, typename TB>
+typename std::enable_if<!(std::numeric_limits<TA>::is_specialized && std::numeric_limits<TB>::is_specialized), bool>::type
+FuzzyCompare(const TA& a, const TB& b)
+{
+  return a == b;
+}
+
 template <class T>
 bool IsNaN(const T a)
 {

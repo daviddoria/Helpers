@@ -56,7 +56,7 @@ index(const T& v, const size_t i)
 // Length functions
 template<typename T>
 typename std::enable_if<std::is_fundamental<T>::value, unsigned int>::type
-length(const T& t)
+length(const T& )
 {
   return 1;
 }

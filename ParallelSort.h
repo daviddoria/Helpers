@@ -32,8 +32,6 @@ class ParallelSort
 {
 public:
 
-  typedef std::vector<T> VectorType;
-
   struct IndexedValue
   {
     unsigned int index;
@@ -45,13 +43,14 @@ public:
     }
   };
 
-  typedef std::vector<IndexedValue> IndexedVector;
+  typedef std::vector<T> VectorType;
+  typedef std::vector<IndexedValue> IndexedVectorType;
 
-  static IndexedVector ParallelSortAscending(const VectorType& v);
+  static IndexedVectorType ParallelSortAscending(const VectorType& v);
 
-  static IndexedVector ParallelSortDescending(const VectorType& v);
+  static IndexedVectorType ParallelSortDescending(const VectorType& v);
 
-  static IndexedVector CreateInternalData(const VectorType& v);
+  static IndexedVectorType CreateInternalData(const VectorType& v);
 
 };
 

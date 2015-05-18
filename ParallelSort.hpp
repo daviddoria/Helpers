@@ -25,21 +25,21 @@
 #include <string>
 
 template <typename T>
-typename ParallelSort<T>::IndexedVector ParallelSort<T>::CreateInternalData(const VectorType& v)
+typename ParallelSort<T>::IndexedVectorType ParallelSort<T>::CreateInternalData(const VectorType& v)
 {
-  IndexedVector pairs(v.size());
+  IndexedVectorType pairs(v.size());
   for(unsigned int i = 0; i < v.size(); i++)
-    {
+  {
     pairs[i].index = i;
     pairs[i].value = v[i];
-    }
+  }
   return pairs;
 }
 
 template <typename T>
-typename ParallelSort<T>::IndexedVector ParallelSort<T>::ParallelSortAscending(const VectorType& v)
+typename ParallelSort<T>::IndexedVectorType ParallelSort<T>::ParallelSortAscending(const VectorType& v)
 {
-  IndexedVector internalData = CreateInternalData(v);
+  IndexedVectorType internalData = CreateInternalData(v);
 
   std::sort(internalData.begin(), internalData.end());
 
@@ -47,9 +47,9 @@ typename ParallelSort<T>::IndexedVector ParallelSort<T>::ParallelSortAscending(c
 }
 
 template <typename T>
-typename ParallelSort<T>::IndexedVector ParallelSort<T>::ParallelSortDescending(const VectorType& v)
+typename ParallelSort<T>::IndexedVectorType ParallelSort<T>::ParallelSortDescending(const VectorType& v)
 {
-  IndexedVector internalData = CreateInternalData(v);
+  IndexedVectorType internalData = CreateInternalData(v);
 
   std::sort(internalData.rbegin(), internalData.rend());
 

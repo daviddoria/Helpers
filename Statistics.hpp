@@ -31,7 +31,7 @@
 
 namespace Statistics
 {
-
+/*
 template<typename TVector>
 typename TypeTraits<TVector>::LargerComponentType RunningAverage(const TVector& v)
 {
@@ -47,38 +47,36 @@ typename TypeTraits<TVector>::LargerComponentType RunningAverage(const TVector& 
   AverageType vectorRunningAverage = v[0]; // We do this because if the length is not known until runtime (std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
 
   for(unsigned int i = 0; i < Helpers::length(v); ++i)
-    {
+  {
     //ItemType object = v[i];
     vectorRunningAverage = (static_cast<AverageType>(v[i]) +
           static_cast<float>(i)*vectorRunningAverage)/static_cast<float>(i+1);
-    }
+  }
 
   return vectorRunningAverage;
 }
+*/
 
 template<typename TVector>
 typename TypeTraits<TVector>::LargerComponentType Average(const TVector& v)
 {
   //std::cout << "Helpers::Average" << std::endl;
   typedef typename TypeTraits<TVector>::LargerComponentType AverageType;
-  // We do this because if the length is not known until runtime
-  // (std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
+
+  // We do this because if the components of 'v' are themselves vectors and their length is not known until runtime
+  // (e.g. 'v' is a std::vector, itk::VariableLengthVector, etc), this will make the output/average vector
+  // be the correct length.
   AverageType vectorSum = v[0];
 
   // Zero the initial vector
-  for(unsigned int i = 0; i < Helpers::length(vectorSum); ++i)
-    {
-    Helpers::index(vectorSum, i) = 0;
-    }
+  Helpers::SetToZero(vectorSum);
 
   for(unsigned int i = 0; i < Helpers::length(v); ++i)
-    {
-    typedef typename TypeTraits<TVector>::ComponentType ObjectType;
-    ObjectType object = Helpers::index(v,i);
-    vectorSum += object;
-    }
+  {
+    vectorSum += Helpers::index(v,i);
+  }
+
   // std::cout << "Average: sum " << vectorSum << std::endl;
-  //typename T::value_type vectorAverage = vectorSum / static_cast<float>(v.size());
   AverageType vectorAverage = vectorSum / static_cast<float>(Helpers::length(v));
 
   // std::cout << "Average: average " << vectorAverage << std::endl;
@@ -97,15 +95,16 @@ typename TypeTraits<TVector>::LargerComponentType Variance(const TVector& v)
 
   typedef typename TypeTraits<TVector>::LargerComponentType VarianceType;
 
+  // Compute the average, because we need it in the variance calculator.
   VarianceType average = Average(v);
   // std::cout << "Variance: average = " << average << std::endl;
-  //VarianceType variance = itk::NumericTraits<VarianceType>::Zero; // I don't understand why this doesn't work
 
-  // We do this (assign variance to the 0th component) because if the length is not known until runtime
-  // (e.g. std::vector, itk::VariableLengthVector, etc), we want the output to be the right length.
+  // We do this (assign variance to the 0th element of the vector 'v') because if the elements of 'v' are
+  // themselves vectors and their length is not known until runtime (e.g. they are std::vector, itk::VariableLengthVector, etc.),
+  // this makes the output the correct length.
   VarianceType variance = v[0];
-  // Variance = 1/NumPixels * sum_i (x_i - u)^2
 
+  // Variance = 1/(NumPixels-1) * sum_i (x_i - u)^2
   for(unsigned int component = 0; component < Helpers::length(variance); ++component)
   {
     float channelVarianceSummation = 0.0f;

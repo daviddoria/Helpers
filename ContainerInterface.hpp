@@ -67,6 +67,15 @@ unsigned int length(const std::vector<T>& v)
   return v.size();
 }
 
+template<typename TVector>
+void SetToZero(TVector& v)
+{
+  for(unsigned int i = 0; i < Helpers::length(v); ++i)
+  {
+    Helpers::index(v, i) = 0;
+  }
+}
+
 } // end namespace
 
 #endif

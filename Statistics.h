@@ -25,19 +25,23 @@
 namespace Statistics
 {
 
-/** Average the values in a vector. */
+/** Average the values in a vector. This function can handle the case
+    where the vector contains vector-valued data (e.g. std::vector<RGBPixel>).*/
 template<typename TVector>
 typename TypeTraits<TVector>::LargerComponentType Average(const TVector& v);
 
-/** Average the values in a vector without summing them all first. */
+/** This doesn't seem necessary as long as LargerType is used as the accumulator?
+// Average the values in a vector without summing them all first.
 template<typename TVector>
 typename TypeTraits<TVector>::LargerComponentType RunningAverage(const TVector& v);
+*/
 
-/** Compute the variance of the values in a vector. */
+/** Compute the variance of the values in a vector. This function can handle the case
+    where the vector contains vector-valued data (e.g. std::vector<RGBPixel>).*/
 template<typename TVector>
 typename TypeTraits<TVector>::LargerComponentType Variance(const TVector& v);
 
-/** Compute the correlation of two vector. */
+/** Compute the correlation of two vectors. */
 template<typename TVector>
 typename TypeTraits<TVector>::LargerComponentType Correlation(const TVector& v1, const TVector& v2);
 

@@ -1,7 +1,7 @@
 #include "Statistics.h"
 
 static bool TestAverage();
-static bool TestRunningAverage();
+//static bool TestRunningAverage();
 static bool TestVariance();
 static bool TestCorrelation();
 
@@ -10,7 +10,7 @@ int main()
   bool allPass = true;
 
   allPass &= TestAverage();
-  allPass &= TestRunningAverage();
+  //allPass &= TestRunningAverage();
   allPass &= TestVariance();
   allPass &= TestCorrelation();
 
@@ -38,7 +38,7 @@ bool TestAverage()
   }
   return true;
 }
-
+/*
 bool TestRunningAverage()
 {
   std::vector<float> v = {1,10};
@@ -50,7 +50,7 @@ bool TestRunningAverage()
   }
   return true;
 }
-
+*/
 bool TestVariance()
 {
 //octave:10> var([1,10])

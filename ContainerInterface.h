@@ -56,6 +56,10 @@ length(const T& t);
 template<typename T>
 unsigned int length(const std::vector<T>& v);
 
+/** This sets every element of a vector (or the only element if TVector is really a scalar) to zero. */
+template<typename TVector>
+void SetToZero(TVector& v);
+
 } // end namespace
 
 #include "ContainerInterface.hpp"

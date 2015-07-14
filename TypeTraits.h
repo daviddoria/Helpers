@@ -22,8 +22,14 @@
 // STL
 #include <vector>
 
-/** For generic types (assume they are scalars). Specializations will have to deal
-  * with the cases that are not. */
+/** These traits allow us to determine the types of values for several kinds o
+    operations. For example, LargerType is often used when computing something
+    like an average, where we'd want the average of int's to be stored in a float.
+    We can also perform the same type of logic on the type of the components of a
+    vector type.*/
+
+/** For generic types (assume they are scalars). Specializations are needed
+  * for the cases in which they are not. */
 template <class T>
 struct TypeTraits
 {
